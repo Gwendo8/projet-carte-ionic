@@ -1,2 +1,8 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+:root {
+    --ion-color-white: #ffffff;
+    --ion-color-white-contrast: #000000; /* Contraste pour le texte */
+    --ion-color-white-shade: #f2f2f2;   /* Ombre si nécessaire */
+    --ion-color-white-tint: #ffffff;    /* Teinte si nécessaire */
+  }
