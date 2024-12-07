@@ -30,7 +30,10 @@ app.get("/api/data", async (req, res) => {
           c.rarity,
           c.created_at,
           c.uptated_at,
-          categories.name AS category_name  -- On utilise le nom complet de la table categories
+          c.health_points,
+          c.attack_points,
+          c.defense_points,
+          categories.name AS category_name  -- 
         FROM 
           public.cards c
         LEFT JOIN 

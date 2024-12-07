@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Détails de la carte</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Fermer</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <p class="card-series">Nom de la carte: {{ card.card_name }}</p>
+      <p class="card-series">Carte de rareté: {{ card.rarity }}</p>
+      <p class="card-series">Carte de la série: {{ card.series }}</p>
+      <p class="card-date">Création de la carte: {{ card.created_at }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

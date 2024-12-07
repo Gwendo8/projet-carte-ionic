@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
+import { CardDetailsModalComponent } from '../card-details-modal/card-details-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +10,9 @@ import { ApiService } from '../services/api.service';
 })
 export class HomePage implements OnInit {
   data: any[] = []; // Contiendra les données récupérées
+  showSearchBar = false;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private modalController: ModalController) {}
 
   ngOnInit() {
     this.loadData();
@@ -26,11 +29,20 @@ export class HomePage implements OnInit {
       }
     );
   }
-  showSearchBar = false;
-
 
   // Méthode pour basculer la barre de recherche
   toggleSearchBar() {
     this.showSearchBar = !this.showSearchBar; // Change l'état
+  }
+
+  // Méthode pour ouvrir la modale
+  async openCardDetails(card: any) {
+    const modal = await this.modalController.create({
+      component: CardDetailsModalComponent,
+      componentProps: {
+        card: card, 
+      },
+    });
+    await modal.present();
   }
 }

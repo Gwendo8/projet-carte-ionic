@@ -7,33 +7,37 @@
 <ion-content>
   <ion-searchbar placeholder="Rechercher une carte"></ion-searchbar>
   <ion-list>
-    <ion-item *ngFor="let item of data" class="card-item">
+    <ion-item *ngFor="let item of data" class="card-item" (click)="openCardDetails(item)">
       <ion-card class="card">
-        <!-- Image de la carte avec superposition -->
         <div class="card-image-container">
           <img [src]="item.image_url" alt="{{ item.card_name }}" class="card-image">
-          <!-- ID en haut à gauche -->
-          <!-- Rareté en haut à droite -->
           <div class="card-rarity">{{ item.rarity }}</div>
-          <!-- Nom au centre -->
           <div class="card-title">{{ item.card_name }}</div>
-          <!-- Catégorie en bas -->
           <div class="card-category">{{ item.category_name }}</div>
         </div>
 
+        <div class="card-stats">
+          <div class="stat">
+            <span class="stat-label">HP</span>
+            <span class="stat-value">{{ item.health_points }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">ATK</span>
+            <span class="stat-value">{{ item.attack_points }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">DEF</span>
+            <span class="stat-value">{{ item.defense_points }}</span>
+          </div>
+        </div>
+
         <ion-card-content>
-          <!-- Description de la carte -->
           <p class="card-description">{{ item.card_description }}</p>
-          <!-- Série -->
-          <p class="card-series">Série: {{ item.series }}</p>
-          <!-- Dates -->
-          <p class="card-date">Créé le: {{ item.created_at }}</p>
         </ion-card-content>
       </ion-card>
     </ion-item>
   </ion-list>
 
-  <!-- Message si aucune donnée -->
   <div *ngIf="data.length === 0" class="no-data">
     <p>Aucune donnée disponible.</p>
   </div>

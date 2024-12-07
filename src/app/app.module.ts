@@ -6,14 +6,14 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-
+import { CardDetailsModalComponent } from './card-details-modal/card-details-modal.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, CardDetailsModalComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule, 
+    AppRoutingModule,
     HttpClientModule,
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
