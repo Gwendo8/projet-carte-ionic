@@ -9,8 +9,9 @@ import { CardDetailsModalComponent } from '../card-details-modal/card-details-mo
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  data: any[] = []; // Contiendra les données récupérées
-  showSearchBar = false;
+  data: any[] = []; // Toutes les données récupérées
+  filteredData: any[] = []; // Données filtrées affichées
+  searchTerm: string = ''; 
 
   constructor(private apiService: ApiService, private modalController: ModalController) {}
 
@@ -22,7 +23,8 @@ export class HomePage implements OnInit {
     this.apiService.getData().subscribe(
       (response) => {
         this.data = response; // Stocker les données récupérées
-        console.log(this.data); // Afficher les données dans la console
+        this.filteredData = this.data; 
+        console.log(this.data); 
       },
       (error) => {
         console.error('Erreur lors de la récupération des données', error);
@@ -30,9 +32,16 @@ export class HomePage implements OnInit {
     );
   }
 
-  // Méthode pour basculer la barre de recherche
-  toggleSearchBar() {
-    this.showSearchBar = !this.showSearchBar; // Change l'état
+  // Méthode pour filtrer les cartes
+  filterCards(event: any) {
+    const searchValue = this.searchTerm.toLowerCase();
+    if (!searchValue) {
+      this.filteredData = this.data;
+      return;
+    }
+    this.filteredData = this.data.filter((item) =>
+      item.card_name.toLowerCase().startsWith(searchValue)
+    );
   }
 
   // Méthode pour ouvrir la modale

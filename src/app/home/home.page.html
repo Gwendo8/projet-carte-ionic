@@ -5,27 +5,35 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar placeholder="Rechercher une carte"></ion-searchbar>
+  <!-- Barre de recherche -->
+  <ion-searchbar 
+    placeholder="Rechercher une carte par son nom"
+    [(ngModel)]="searchTerm"
+    (ionInput)="filterCards($event)">
+  </ion-searchbar>
+
+  <!-- Liste des cartes filtrées -->
   <ion-list>
-    <ion-item *ngFor="let item of data" class="card-item" (click)="openCardDetails(item)">
+    <ion-item *ngFor="let item of filteredData" class="card-item" (click)="openCardDetails(item)">
       <ion-card class="card">
         <div class="card-image-container">
           <img [src]="item.image_url" alt="{{ item.card_name }}" class="card-image">
-          <div class="card-rarity">{{ item.rarity }}</div>
+          <div class="card-rarity">{{ item.rarity_name }}</div>
           <div class="card-title">{{ item.card_name }}</div>
           <div class="card-category">{{ item.category_name }}</div>
         </div>
 
         <div class="card-stats">
-          <div class="stat">
+          <!-- Affichage des points -->
+          <div class="stat" *ngIf="item.health_points">
             <span class="stat-label">HP</span>
             <span class="stat-value">{{ item.health_points }}</span>
           </div>
-          <div class="stat">
+          <div class="stat" *ngIf="item.attack_points">
             <span class="stat-label">ATK</span>
             <span class="stat-value">{{ item.attack_points }}</span>
           </div>
-          <div class="stat">
+          <div class="stat" *ngIf="item.defense_points">
             <span class="stat-label">DEF</span>
             <span class="stat-value">{{ item.defense_points }}</span>
           </div>
@@ -38,7 +46,7 @@
     </ion-item>
   </ion-list>
 
-  <div *ngIf="data.length === 0" class="no-data">
+  <div *ngIf="filteredData.length === 0" class="no-data">
     <p>Aucune donnée disponible.</p>
   </div>
 </ion-content>

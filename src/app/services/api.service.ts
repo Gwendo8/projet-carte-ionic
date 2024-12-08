@@ -13,4 +13,10 @@ export class ApiService {
   getData(): Observable<any> {
     return this.http.get(`${this.baseUrl}/data`);
   }
+  getListData(): Observable<any>{
+    return this.http.get(`${this.baseUrl}/form-data`);
+  }
+  addCard(card: any): Observable<any>{
+    return this.http.post(`${this.baseUrl}/add-data`, card);
+  }
 }
