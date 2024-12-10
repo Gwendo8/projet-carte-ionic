@@ -140,3 +140,19 @@ ion-card-content {
 .card-rarity {
   font-family: 'Roboto', sans-serif;
 }
+
+ion-toolbar {
+  ion-buttons {
+    ion-button {
+      --background: transparent;
+      --padding-start: 0;
+      --padding-end: 0;
+      ion-icon {
+        font-size: 50px;
+      }
+      &:hover {
+        --color: #004d40; /* Couleur légèrement plus foncée au survol */
+      }
+    }
+  }
+}

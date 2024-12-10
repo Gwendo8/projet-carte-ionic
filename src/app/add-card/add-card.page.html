@@ -1,77 +1,75 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>AddCard</ion-title>
+    <ion-title>Ajouter une carte</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Add Card</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <form (ngSubmit)="addCard()">
-    <ion-item>
-      <ion-label position="floating">Card Name</ion-label>
-      <ion-input [(ngModel)]="card.name" name="name" required></ion-input>
-    </ion-item>
+  <div class="form-container">
+    <form (ngSubmit)="addCard()">
+      <ion-item>
+        <ion-label position="floating">Card Name</ion-label>
+        <ion-input [(ngModel)]="card.name" name="name" required></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating"></ion-label>
-      <ion-input type="file" (change)="onFileSelected($event)" accept="image/*"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating"></ion-label>
+        <ion-input type="file" (change)="onFileSelected($event)" accept="image/*"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Description</ion-label>
-      <ion-input [(ngModel)]="card.description" name="description" required></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea [(ngModel)]="card.description" name="description" required></ion-textarea>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Health Points</ion-label>
-      <ion-input [(ngModel)]="card.health_points" name="health_points" type="number" required></ion-input>
-    </ion-item>
+      <div class="form-row">
+        <ion-item class="form-col">
+          <ion-label position="floating">Health Points</ion-label>
+          <ion-input [(ngModel)]="card.health_points" name="health_points" type="number" required></ion-input>
+        </ion-item>
+        <ion-item class="form-col">
+          <ion-label position="floating">Attack Points</ion-label>
+          <ion-input [(ngModel)]="card.attack_points" name="attack_points" type="number" required></ion-input>
+        </ion-item>
+        <ion-item class="form-col">
+          <ion-label position="floating">Defense Points</ion-label>
+          <ion-input [(ngModel)]="card.defense_points" name="defense_points" type="number" required></ion-input>
+        </ion-item>
+      </div>
 
-    <ion-item>
-      <ion-label position="floating">Attack Points</ion-label>
-      <ion-input [(ngModel)]="card.attack_points" name="attack_points" type="number" required></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label>Category</ion-label>
+        <ion-select [(ngModel)]="card.category_id" name="category_id" required>
+          <ion-select-option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Defense Points</ion-label>
-      <ion-input [(ngModel)]="card.defense_points" name="defense_points" type="number" required></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label>Series</ion-label>
+        <ion-select [(ngModel)]="card.series_id" name="series_id" required>
+          <ion-select-option *ngFor="let series of series" [value]="series.id">
+            {{ series.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
 
-    <!-- Liste déroulante pour les catégories -->
-    <ion-item>
-      <ion-label>Category</ion-label>
-      <ion-select [(ngModel)]="card.category_id" name="category_id" required>
-        <ion-select-option *ngFor="let category of categories" [value]="category.id">
-          {{ category.name }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-item>
+        <ion-label>Rarity</ion-label>
+        <ion-select [(ngModel)]="card.rarity_id" name="rarity_id" required>
+          <ion-select-option *ngFor="let rarity of rarities" [value]="rarity.id">
+            {{ rarity.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
 
-    <!-- Liste déroulante pour les séries -->
-    <ion-item>
-      <ion-label>Series</ion-label>
-      <ion-select [(ngModel)]="card.series_id" name="series_id" required>
-        <ion-select-option *ngFor="let series of series" [value]="series.id">
-          {{ series.name }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <!-- Liste déroulante pour les raretés -->
-    <ion-item>
-      <ion-label>Rarity</ion-label>
-      <ion-select [(ngModel)]="card.rarity_id" name="rarity_id" required>
-        <ion-select-option *ngFor="let rarity of rarities" [value]="rarity.id">
-          {{ rarity.name }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-button expand="full" type="submit">Add Card</ion-button>
-  </form>
+      <ion-button expand="block" type="submit">Add Card</ion-button>
+    </form>
+  </div>
 </ion-content>
