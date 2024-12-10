@@ -7,6 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CardDetailsModalComponent } from './card-details-modal/card-details-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
+
 
 @NgModule({
   declarations: [AppComponent, CardDetailsModalComponent],
@@ -15,6 +18,7 @@ import { CardDetailsModalComponent } from './card-details-modal/card-details-mod
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

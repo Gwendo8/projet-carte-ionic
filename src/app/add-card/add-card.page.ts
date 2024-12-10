@@ -18,12 +18,19 @@ export class AddCardPage implements OnInit {
     health_points: 0,
     attack_points: 0,
     defense_points: 0,
-    category_id: null,
-    rarity_id: null,
-    series_id: null,
+    category_id: '',
+    rarity_id: '',
+    series_id: '',
   };
 
   constructor(private apiService: ApiService) { }
+
+  selectedFile: File | null = null;
+
+  onFileSelected(event: any) {
+    console.log('Fichier sélectionné:', event.target.files[0]);
+    this.selectedFile = event.target.files[0];
+  }
 
   ngOnInit() {
     this.loadData();
@@ -47,7 +54,21 @@ export class AddCardPage implements OnInit {
 
   // Fonction pour ajouter la carte
   addCard() {
-    this.apiService.addCard(this.card).subscribe(
+    const formData = new FormData();
+    formData.append('name', this.card.name);
+    formData.append('description', this.card.description);
+    formData.append('health_points', this.card.health_points.toString());
+    formData.append('attack_points', this.card.attack_points.toString());
+    formData.append('defense_points', this.card.defense_points.toString());
+    formData.append('category_id', this.card.category_id);
+    formData.append('rarity_id', this.card.rarity_id);
+    formData.append('series_id', this.card.series_id);
+  
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+  
+    this.apiService.addCard(formData).subscribe(
       (response) => {
         console.log('Carte ajoutée:', response);
         alert('Carte ajoutée avec succès!');

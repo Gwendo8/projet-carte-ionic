@@ -1,7 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const path = require("path");
 const { Pool } = require("pg");
+const fs = require("fs");
 
 const app = express();
 const port = 3000;
@@ -9,6 +12,7 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// Configuration de la base de données PostgreSQL
 const pool = new Pool({
   host: "localhost",
   user: "postgres",
@@ -16,6 +20,35 @@ const pool = new Pool({
   database: "Angular_Naruto",
   port: 5432,
 });
+
+// Configuration du stockage des fichiers avec multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '..', 'src', 'assets', 'images')); // Dossier de destination
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname)); // Nom unique pour éviter les conflits
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  // Accepter seulement les images
+  const fileTypes = /jpeg|jpg|png|gif/;
+  const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = fileTypes.test(file.mimetype);
+
+  if (extname && mimetype) {
+    return cb(null, true); // Fichier valide
+  } else {
+    cb(new Error('Seules les images sont autorisées.'));
+  }
+};
+
+const upload = multer({ storage, fileFilter });
+
+// Middleware pour servir les fichiers statiques (images)
+app.use('/images', express.static(path.join(__dirname, 'assets', 'images')));
 
 // Récupération des cartes
 app.get("/api/data", async (req, res) => {
@@ -79,11 +112,10 @@ app.get("/api/form-data", async (req, res) => {
 });
 
 // Ajout de carte(s)
-app.post("/api/add-data", async (req, res) => {
+app.post("/api/add-card", upload.single('image'), async (req, res) => {
   try {
     const {
       name,
-      image_url,
       description,
       health_points,
       attack_points,
@@ -93,19 +125,22 @@ app.post("/api/add-data", async (req, res) => {
       series_id,
     } = req.body;
 
+    // Définir l'URL de l'image téléchargée
+    const image_url = req.file ? `assets/images/${req.file.filename}` : null;
+    console.log('Fichier téléchargé:', req.file);
+
     if (!category_id || !rarity_id || !series_id) {
       return res.status(400).json({
-        message:
-          "Les clés étrangères (category_id, rarity_id, series_id) sont obligatoires.",
+        message: "Les clés étrangères (category_id, rarity_id, series_id) sont obligatoires.",
       });
     }
 
     const query = `
-          INSERT INTO public.cards
-          (name, image_url, description, health_points, attack_points, defense_points, category_id, rarity_id, series_id)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-          RETURNING *;
-      `;
+      INSERT INTO public.cards
+      (name, image_url, description, health_points, attack_points, defense_points, category_id, rarity_id, series_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      RETURNING *;
+    `;
 
     const result = await pool.query(query, [
       name,
@@ -118,6 +153,7 @@ app.post("/api/add-data", async (req, res) => {
       rarity_id,
       series_id,
     ]);
+
     res.status(201).json({
       message: "Carte ajoutée avec succès",
       card: result.rows[0],

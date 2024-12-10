@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { AddCardPageRoutingModule } from './add-card-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { AddCardPage } from './add-card.page';
 
@@ -13,7 +15,8 @@ import { AddCardPage } from './add-card.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    AddCardPageRoutingModule
+    AddCardPageRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [AddCardPage]
 })

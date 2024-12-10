@@ -17,6 +17,6 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/form-data`);
   }
   addCard(card: any): Observable<any>{
-    return this.http.post(`${this.baseUrl}/add-data`, card);
+    return this.http.post(`${this.baseUrl}/add-card`, card);
   }
 }
