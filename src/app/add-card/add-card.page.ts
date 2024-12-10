@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-add-card',
@@ -23,7 +25,7 @@ export class AddCardPage implements OnInit {
     series_id: '',
   };
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   selectedFile: File | null = null;
 
@@ -72,11 +74,15 @@ export class AddCardPage implements OnInit {
       (response) => {
         console.log('Carte ajoutée:', response);
         alert('Carte ajoutée avec succès!');
+        this.router.navigate(['/home']);
       },
       (error) => {
         console.error('Erreur lors de l\'ajout de la carte:', error);
         alert('Erreur lors de l\'ajout de la carte.');
       }
     );
+  }
+  goBack() {
+    this.router.navigate(['/home']);
   }
 }

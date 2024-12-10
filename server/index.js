@@ -24,10 +24,10 @@ const pool = new Pool({
 // Configuration du stockage des fichiers avec multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'src', 'assets', 'images')); // Dossier de destination
+    cb(null, path.join(__dirname, "..", "src", "assets", "images")); // Dossier de destination
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, uniqueSuffix + path.extname(file.originalname)); // Nom unique pour éviter les conflits
   },
 });
@@ -41,14 +41,14 @@ const fileFilter = (req, file, cb) => {
   if (extname && mimetype) {
     return cb(null, true); // Fichier valide
   } else {
-    cb(new Error('Seules les images sont autorisées.'));
+    cb(new Error("Seules les images sont autorisées."));
   }
 };
 
 const upload = multer({ storage, fileFilter });
 
 // Middleware pour servir les fichiers statiques (images)
-app.use('/images', express.static(path.join(__dirname, 'assets', 'images')));
+app.use("/images", express.static(path.join(__dirname, "assets", "images")));
 
 // Récupération des cartes
 app.get("/api/data", async (req, res) => {
@@ -112,7 +112,7 @@ app.get("/api/form-data", async (req, res) => {
 });
 
 // Ajout de carte(s)
-app.post("/api/add-card", upload.single('image'), async (req, res) => {
+app.post("/api/add-card", upload.single("image"), async (req, res) => {
   try {
     const {
       name,
@@ -127,11 +127,12 @@ app.post("/api/add-card", upload.single('image'), async (req, res) => {
 
     // Définir l'URL de l'image téléchargée
     const image_url = req.file ? `assets/images/${req.file.filename}` : null;
-    console.log('Fichier téléchargé:', req.file);
+    console.log("Fichier téléchargé:", req.file);
 
     if (!category_id || !rarity_id || !series_id) {
       return res.status(400).json({
-        message: "Les clés étrangères (category_id, rarity_id, series_id) sont obligatoires.",
+        message:
+          "Les clés étrangères (category_id, rarity_id, series_id) sont obligatoires.",
       });
     }
 
@@ -164,6 +165,63 @@ app.post("/api/add-card", upload.single('image'), async (req, res) => {
       message: "Erreur serveur",
       error: error.message,
     });
+  }
+});
+
+// Modificiation
+// Récupération des données
+app.get("/api/data/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const request = `SELECT 
+      cards.id, 
+      cards.name, 
+      cards.description, 
+      cards.image_url, 
+      cards.health_points, 
+      cards.attack_points, 
+      cards.defense_points, 
+      cards.category_id, 
+      categories.name AS category_name, -- Nom de la catégorie
+      cards.rarity_id, 
+      rarity.name AS rarity_name -- Nom de la rareté
+    FROM 
+      public.cards
+    LEFT JOIN 
+      public.categories ON cards.category_id = categories.id
+    LEFT JOIN 
+      public.rarity ON cards.rarity_id = rarity.id
+    WHERE cards.id = $1`;
+
+    const result = await pool.query(request, [id]);
+
+    if (result.rows.length === 0) {
+      // Aucun résultat trouvé
+      return res.status(404).json({ message: "Carte non trouvée." });
+    }
+
+    const card = result.rows[0]; // Définition en dehors du bloc if
+    res.send({
+      id: card.id,
+      name: card.name,
+      description: card.description,
+      image_url: card.image_url,
+      health_points: card.health_points,
+      attack_points: card.attack_points,
+      defense_points: card.defense_points,
+      category: {
+        id: card.category_id,
+        name: card.category_name,
+      },
+      rarity: {
+        id: card.rarity_id,
+        name: card.rarity_name,
+      },
+    });
+    console.log("données récupéres : ", card);
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la carte:", error);
+    res.status(500).json({ message: "Erreur lors de la récupération des données." });
   }
 });
 

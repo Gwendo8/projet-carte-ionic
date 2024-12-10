@@ -1,7 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Liste des cartes</ion-title>
-    <!-- Bouton pour redirection -->
     <ion-buttons slot="end">
       <ion-button routerLink="/add-card">
         <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
@@ -20,9 +19,10 @@
 
   <!-- Liste des cartes filtrées -->
   <ion-list>
-    <ion-item *ngFor="let item of filteredData" class="card-item" (click)="openCardDetails(item)">
-      <ion-card class="card">
-        <div class="card-image-container">
+    <ion-item *ngFor="let item of filteredData" class="card-item">
+      <!-- Appel de la méthode logItem() -->
+      <ion-card [routerLink]="['/update-card', item.card_id]">
+                        <div class="card-image-container">
           <img [src]="item.image_url" alt="{{ item.card_name }}" class="card-image">
           <div class="card-rarity">{{ item.rarity_name }}</div>
           <div class="card-title">{{ item.card_name }}</div>
@@ -48,6 +48,9 @@
         <ion-card-content>
           <p class="card-description">{{ item.card_description }}</p>
         </ion-card-content>
+
+        <!-- Bouton pour ouvrir la modale avec les détails de la carte -->
+        <ion-button (click)="openCardDetails(item)" expand="block" color="primary">Voir les détails</ion-button>
       </ion-card>
     </ion-item>
   </ion-list>

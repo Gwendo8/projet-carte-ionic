@@ -11,20 +11,33 @@ import { CardDetailsModalComponent } from '../card-details-modal/card-details-mo
 export class HomePage implements OnInit {
   data: any[] = []; // Toutes les données récupérées
   filteredData: any[] = []; // Données filtrées affichées
-  searchTerm: string = ''; 
+  searchTerm: string = '';
 
-  constructor(private apiService: ApiService, private modalController: ModalController) {}
+  constructor(
+    private apiService: ApiService,
+    private modalController: ModalController
+  ) {}
+
 
   ngOnInit() {
     this.loadData();
+  }
+
+  // Permet de recharger la page home directement après l'ajout d'une carte
+  ionViewWillEnter() {
+    this.loadData();
+  }
+
+  logItem(item: any) {
+    console.log("item",item);
   }
 
   loadData() {
     this.apiService.getData().subscribe(
       (response) => {
         this.data = response; // Stocker les données récupérées
-        this.filteredData = this.data; 
-        console.log(this.data); 
+        this.filteredData = this.data;
+        console.log(this.data);
       },
       (error) => {
         console.error('Erreur lors de la récupération des données', error);
@@ -49,7 +62,7 @@ export class HomePage implements OnInit {
     const modal = await this.modalController.create({
       component: CardDetailsModalComponent,
       componentProps: {
-        card: card, 
+        card: card,
       },
     });
     await modal.present();

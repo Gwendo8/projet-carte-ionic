@@ -8,11 +8,12 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CardDetailsModalComponent } from './card-details-modal/card-details-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UpdateCardPage } from './update-card/update-card.page';
 
 
 
 @NgModule({
-  declarations: [AppComponent, CardDetailsModalComponent],
+  declarations: [AppComponent, CardDetailsModalComponent,UpdateCardPage],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

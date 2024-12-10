@@ -4,10 +4,16 @@ ion-header {
 }
 
 ion-toolbar {
-  background-color: #004d40;
   ion-title {
     font-size: 1.6rem;
     font-weight: bold;
+  }
+  ion-button {
+    --background: none;
+    --color: black;
+    ion-icon {
+      font-size: 24px;
+    }
   }
 }
 

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Modifier la carte</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Vérifier si les données de la carte sont chargées -->
+  <div *ngIf="card; else loading">
+    <ion-card>
+      <!-- Affichage de l'image de la carte -->
+      <img [src]="card.image_url" alt="{{ card.name }}" class="card-image">
+
+      <ion-card-header>
+        <ion-card-title>{{ card.name }}</ion-card-title>
+        <ion-card-subtitle>{{ card.rarity.name }} - {{ card.category.name }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p><strong>Description:</strong> {{ card.description }}</p>
+
+        <!-- Affichage des points de la carte -->
+        <div *ngIf="card.health_points">
+          <p><strong>HP:</strong> {{ card.health_points }}</p>
+        </div>
+        <div *ngIf="card.attack_points">
+          <p><strong>ATK:</strong> {{ card.attack_points }}</p>
+        </div>
+        <div *ngIf="card.defense_points">
+          <p><strong>DEF:</strong> {{ card.defense_points }}</p>
+        </div>
+      </ion-card-content>
+
+      <!-- Boutons ou autres actions -->
+      <ion-footer>
+        <ion-button expand="full" color="primary">Modifier la carte</ion-button>
+      </ion-footer>
+    </ion-card>
+  </div>
+
+  <!-- Si les données sont en cours de chargement -->
+  <ng-template #loading>
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Chargement des informations...</p>
+  </ng-template>
+</ion-content>

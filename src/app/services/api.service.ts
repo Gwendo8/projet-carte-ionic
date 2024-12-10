@@ -19,4 +19,7 @@ export class ApiService {
   addCard(card: any): Observable<any>{
     return this.http.post(`${this.baseUrl}/add-card`, card);
   }
+  getCardById(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/data/${id}`);
+  }
 }
