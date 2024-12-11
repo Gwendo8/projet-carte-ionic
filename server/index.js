@@ -294,6 +294,21 @@ app.put("/api/update-card/:id", upload.single("image"), async (req, res) => {
   }
 });
 
+//Suppression d'une carte 
+app.delete("/api/delete/:id",async(req,res)=>{
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM public.cards WHERE id =$1', [id]);
+    if (result.rowCount > 0) {
+        res.status(200).json({ message: `Carte supprimée avec succès.` });
+    } else {
+        res.status(404).json({ message: `Carte avec l'id ${id} introuvable.` });
+    }
+} catch (error) {
+    console.error('Erreur lors de la suppression :', error);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
+}
+});
 app.listen(port, () => {
   console.log(`API en cours d'exécution sur http://localhost:${port}`);
 });

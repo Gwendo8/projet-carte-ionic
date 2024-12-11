@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
 import { CardDetailsModalComponent } from '../card-details-modal/card-details-modal.component';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-home',
@@ -15,9 +17,13 @@ export class HomePage implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private router: Router
   ) {}
 
+  navigateToUpdate(cardId: number) {
+  this.router.navigate(['/update-card', cardId]);
+}
 
   ngOnInit() {
     this.loadData();
@@ -29,7 +35,7 @@ export class HomePage implements OnInit {
   }
 
   logItem(item: any) {
-    console.log("item",item);
+    console.log('item', item);
   }
 
   loadData() {
@@ -58,7 +64,8 @@ export class HomePage implements OnInit {
   }
 
   // Méthode pour ouvrir la modale
-  async openCardDetails(card: any) {
+  async openCardDetails(card: any,event: Event) {
+    event.stopPropagation();
     const modal = await this.modalController.create({
       component: CardDetailsModalComponent,
       componentProps: {
@@ -66,5 +73,24 @@ export class HomePage implements OnInit {
       },
     });
     await modal.present();
+  }
+
+  // Méthode pour supprimer une carte
+  deleteCard(id: number, event:Event) {
+    event.stopPropagation();
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette carte ?')) {
+      this.apiService.deleteCard(id).subscribe({
+        next: (response) => {
+          alert(response.message); 
+          this.data = this.data.filter((card) => card.id !== id); 
+          this.filteredData = this.filteredData.filter((card) => card.id !== id); 
+          this.loadData();
+        },
+        error: (error) => {
+          console.error('Erreur lors de la suppression :', error);
+          alert('Impossible de supprimer la carte.');
+        },
+      });
+    }
   }
 }

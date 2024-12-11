@@ -25,4 +25,7 @@ export class ApiService {
   updateCard(card: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/update-card/${card.id}`, card);
   }
+  deleteCard(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/delete/${id}`);
+  }
 }

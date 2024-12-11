@@ -20,17 +20,17 @@
   <!-- Liste des cartes filtrées -->
   <ion-list>
     <ion-item *ngFor="let item of filteredData" class="card-item">
-      <!-- Appel de la méthode logItem() -->
-      <ion-card [routerLink]="['/update-card', item.card_id]">
-                        <div class="card-image-container">
-          <img [src]="item.image_url" alt="{{ item.card_name }}" class="card-image">
-          <div class="card-rarity">{{ item.rarity_name }}</div>
-          <div class="card-title">{{ item.card_name }}</div>
-          <div class="card-category">{{ item.category_name }}</div>
+      <ion-card>
+        <div (click)="navigateToUpdate(item.card_id)" class="card-link">
+          <div class="card-image-container">
+            <img [src]="item.image_url" alt="{{ item.card_name }}" class="card-image">
+            <div class="card-rarity">{{ item.rarity_name }}</div>
+            <div class="card-title">{{ item.card_name }}</div>
+            <div class="card-category">{{ item.category_name }}</div>
+          </div>
         </div>
-
+    
         <div class="card-stats">
-          <!-- Affichage des points -->
           <div class="stat" *ngIf="item.health_points">
             <span class="stat-label">HP</span>
             <span class="stat-value">{{ item.health_points }}</span>
@@ -44,13 +44,26 @@
             <span class="stat-value">{{ item.defense_points }}</span>
           </div>
         </div>
-
+    
         <ion-card-content>
           <p class="card-description">{{ item.card_description }}</p>
         </ion-card-content>
-
-        <!-- Bouton pour ouvrir la modale avec les détails de la carte -->
-        <ion-button (click)="openCardDetails(item)" expand="block" color="primary">Voir les détails</ion-button>
+    
+        <!-- Boutons d'action -->
+        <div class="card-actions">
+          <ion-button 
+            (click)="openCardDetails(item, $event)" 
+            expand="block" 
+            color="primary">
+            Voir les détails
+          </ion-button>
+          <ion-button 
+            expand="block" 
+            color="danger" 
+            (click)="deleteCard(item.card_id, $event)">
+            Supprimer
+          </ion-button>
+        </div>
       </ion-card>
     </ion-item>
   </ion-list>
