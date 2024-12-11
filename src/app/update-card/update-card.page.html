@@ -5,40 +5,113 @@
 </ion-header>
 
 <ion-content>
-  <!-- Vérifier si les données de la carte sont chargées -->
-  <div *ngIf="card; else loading">
-    <ion-card>
-      <!-- Affichage de l'image de la carte -->
-      <img [src]="card.image_url" alt="{{ card.name }}" class="card-image">
+  <div *ngIf="card && formData.categories; else loading">
+    <form (ngSubmit)="updateCard()">
+      <ion-card class="card-container">
+        <img [src]="card.image_url" alt="{{ card.name }}" class="card-image" />
 
-      <ion-card-header>
-        <ion-card-title>{{ card.name }}</ion-card-title>
-        <ion-card-subtitle>{{ card.rarity.name }} - {{ card.category.name }}</ion-card-subtitle>
-      </ion-card-header>
+        <ion-item class="form-item">
+          <ion-label position="stacked">Modifier l'image</ion-label>
+          <input
+            type="file"
+            (change)="onImageChange($event)"
+            accept="image/*"
+          />
+        </ion-item>
 
-      <ion-card-content>
-        <p><strong>Description:</strong> {{ card.description }}</p>
+        <ion-card-header>
+          <ion-card-title>
+            <ion-input
+              [(ngModel)]="card.name"
+              name="name"
+              placeholder="Nom"
+              class="input-field"
+            ></ion-input>
+          </ion-card-title>
+        </ion-card-header>
 
-        <!-- Affichage des points de la carte -->
-        <div *ngIf="card.health_points">
-          <p><strong>HP:</strong> {{ card.health_points }}</p>
-        </div>
-        <div *ngIf="card.attack_points">
-          <p><strong>ATK:</strong> {{ card.attack_points }}</p>
-        </div>
-        <div *ngIf="card.defense_points">
-          <p><strong>DEF:</strong> {{ card.defense_points }}</p>
-        </div>
-      </ion-card-content>
+        <ion-card-content>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Catégorie</ion-label>
+            <ion-select [(ngModel)]="card.category.id" name="category_id">
+              <ion-select-option
+                *ngFor="let category of formData.categories"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
 
-      <!-- Boutons ou autres actions -->
-      <ion-footer>
-        <ion-button expand="full" color="primary">Modifier la carte</ion-button>
-      </ion-footer>
-    </ion-card>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Série</ion-label>
+            <ion-select [(ngModel)]="card.series.id" name="series_id">
+              <ion-select-option
+                *ngFor="let serie of formData.series"
+                [value]="serie.id"
+              >
+                {{ serie.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">Rareté</ion-label>
+            <ion-select [(ngModel)]="card.rarity.id" name="rarity_id">
+              <ion-select-option
+                *ngFor="let rarity of formData.rarities"
+                [value]="rarity.id"
+              >
+                {{ rarity.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">Description</ion-label>
+            <ion-textarea
+              [(ngModel)]="card.description"
+              name="description"
+            ></ion-textarea>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">HP</ion-label>
+            <ion-input
+              type="number"
+              [(ngModel)]="card.health_points"
+              name="health_points"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">ATK</ion-label>
+            <ion-input
+              type="number"
+              [(ngModel)]="card.attack_points"
+              name="attack_points"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">DEF</ion-label>
+            <ion-input
+              type="number"
+              [(ngModel)]="card.defense_points"
+              name="defense_points"
+            ></ion-input>
+          </ion-item>
+        </ion-card-content>
+
+        <ion-footer>
+          <ion-button expand="full" type="submit" color="primary"
+            >Modifier</ion-button
+          >
+        </ion-footer>
+      </ion-card>
+    </form>
   </div>
 
-  <!-- Si les données sont en cours de chargement -->
   <ng-template #loading>
     <ion-spinner name="crescent"></ion-spinner>
     <p>Chargement des informations...</p>

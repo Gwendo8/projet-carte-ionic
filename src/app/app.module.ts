@@ -9,6 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CardDetailsModalComponent } from './card-details-modal/card-details-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UpdateCardPage } from './update-card/update-card.page';
+import { FormsModule } from '@angular/forms'; // Assurez-vous que c'est bien importé
+
 
 
 
@@ -20,6 +22,7 @@ import { UpdateCardPage } from './update-card/update-card.page';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

@@ -1,0 +1,69 @@
+.card-container {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.card-image {
+  border-radius: 12px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+.input-field {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --border-radius: 8px;
+  --box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+}
+
+.form-item {
+  margin-bottom: 12px;
+}
+
+ion-item {
+  --border-width: 1px;
+  --border-color: #ddd;
+  --border-radius: 8px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+ion-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+ion-select,
+ion-input,
+ion-textarea {
+  font-size: 14px;
+  border-radius: 8px;
+  margin-top: 6px;
+}
+
+ion-button {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px;
+  --border-radius: 8px;
+}
+
+ion-button[color="primary"] {
+  background-color: #4caf50;
+  --border-color: #4caf50;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+ion-spinner {
+  color: #4caf50;
+  margin-top: 20px;
+}
+
+p {
+  text-align: center;
+  color: #333;
+}

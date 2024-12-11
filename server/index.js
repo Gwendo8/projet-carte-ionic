@@ -9,8 +9,11 @@ const fs = require("fs");
 const app = express();
 const port = 3000;
 
+// Middleware CORS
 app.use(cors());
-app.use(bodyParser.json());
+
+app.use(bodyParser.json({ limit: '50mb' }));  // Limite à 50 Mo pour les données JSON
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));  // Limite à 50 Mo pour les données URL encodées
 
 // Configuration de la base de données PostgreSQL
 const pool = new Pool({
@@ -45,7 +48,12 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ storage, fileFilter });
+// Configuration de Multer avec une limite de taille de 50 Mo
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 50 * 1024 * 1024 },  // Limite de 50 Mo
+});
 
 // Middleware pour servir les fichiers statiques (images)
 app.use("/images", express.static(path.join(__dirname, "assets", "images")));
@@ -174,24 +182,29 @@ app.get("/api/data/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const request = `SELECT 
-      cards.id, 
-      cards.name, 
-      cards.description, 
-      cards.image_url, 
-      cards.health_points, 
-      cards.attack_points, 
-      cards.defense_points, 
-      cards.category_id, 
-      categories.name AS category_name, -- Nom de la catégorie
-      cards.rarity_id, 
-      rarity.name AS rarity_name -- Nom de la rareté
-    FROM 
-      public.cards
-    LEFT JOIN 
-      public.categories ON cards.category_id = categories.id
-    LEFT JOIN 
-      public.rarity ON cards.rarity_id = rarity.id
-    WHERE cards.id = $1`;
+  cards.id, 
+  cards.name, 
+  cards.description, 
+  cards.image_url, 
+  cards.health_points, 
+  cards.attack_points, 
+  cards.defense_points, 
+  cards.category_id, 
+  categories.name AS category_name, -- Nom de la catégorie
+  cards.rarity_id, 
+  rarity.name AS rarity_name, -- Nom de la rareté
+  cards.series_id,  -- ID de la série
+  series.name AS series_name  -- Nom de la série
+FROM 
+  public.cards
+LEFT JOIN 
+  public.categories ON cards.category_id = categories.id
+LEFT JOIN 
+  public.rarity ON cards.rarity_id = rarity.id
+LEFT JOIN 
+  public.series ON cards.series_id = series.id  -- Jointure avec la table des séries
+WHERE 
+  cards.id = $1;`;
 
     const result = await pool.query(request, [id]);
 
@@ -217,11 +230,67 @@ app.get("/api/data/:id", async (req, res) => {
         id: card.rarity_id,
         name: card.rarity_name,
       },
+      series: {
+        id: card.series_id,
+        name: card.series_name,
+      }
     });
     console.log("données récupéres : ", card);
   } catch (error) {
     console.error("Erreur lors de la récupération de la carte:", error);
     res.status(500).json({ message: "Erreur lors de la récupération des données." });
+  }
+});
+
+app.put("/api/update-card/:id", upload.single("image"), async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    description,
+    health_points,
+    attack_points,
+    defense_points,
+    category_id,
+    rarity_id,
+    series_id,
+  } = req.body;
+
+  let image_url = req.file ? `assets/images/${req.file.filename}` : null;
+  console.log("Fichier téléchargé:", req.file);
+
+  try {
+    const query = `
+      UPDATE public.cards
+      SET name = $1, description = $2, health_points = $3, attack_points = $4,
+          defense_points = $5, category_id = $6, rarity_id = $7, series_id = $8,
+          image_url = COALESCE($9, image_url) -- Si pas de nouvelle image, garder l'ancienne
+      WHERE id = $10
+      RETURNING *;
+    `;
+
+    const values = [
+      name,
+      description,
+      health_points,
+      attack_points,
+      defense_points,
+      category_id,
+      rarity_id,
+      series_id,
+      image_url, 
+      id,
+    ];
+
+    const result = await pool.query(query, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Carte non trouvée." });
+    }
+
+    res.status(200).json({ message: "Carte mise à jour avec succès.", card: result.rows[0] });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de la carte :", error);
+    res.status(500).json({ message: "Erreur serveur." });
   }
 });
 
