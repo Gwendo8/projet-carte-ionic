@@ -16,7 +16,11 @@ const routes: Routes = [
     path: 'add-card',
     loadChildren: () => import('./add-card/add-card.module').then( m => m.AddCardPageModule)
   },
-  { path: 'update-card/:id', component: UpdateCardPage }
+  { path: 'update-card/:id', component: UpdateCardPage },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+  }
 
 ];
 

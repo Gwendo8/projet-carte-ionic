@@ -10,6 +10,11 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
+ 
+  login(email: string, password: string): Observable<any> {
+    const body = { email, password };
+    return this.http.post(`${this.baseUrl}/login`, body);
+  }
   getData(): Observable<any> {
     return this.http.get(`${this.baseUrl}/data`);
   }
@@ -27,5 +32,8 @@ export class ApiService {
   }
   deleteCard(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete/${id}`);
+  }
+  registerUser(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, userData);
   }
 }

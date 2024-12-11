@@ -5,15 +5,18 @@ const multer = require("multer");
 const path = require("path");
 const { Pool } = require("pg");
 const fs = require("fs");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 const port = 3000;
 
 // Middleware CORS
 app.use(cors());
+app.use(express.json());
+app.use(bodyParser.json());
 
-app.use(bodyParser.json({ limit: '50mb' }));  // Limite à 50 Mo pour les données JSON
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));  // Limite à 50 Mo pour les données URL encodées
+app.use(bodyParser.json({ limit: "50mb" })); // Limite à 50 Mo pour les données JSON
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true })); // Limite à 50 Mo pour les données URL encodées
 
 // Configuration de la base de données PostgreSQL
 const pool = new Pool({
@@ -52,11 +55,13 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 50 * 1024 * 1024 },  // Limite de 50 Mo
+  limits: { fileSize: 50 * 1024 * 1024 }, // Limite de 50 Mo
 });
 
 // Middleware pour servir les fichiers statiques (images)
 app.use("/images", express.static(path.join(__dirname, "assets", "images")));
+
+
 
 // Récupération des cartes
 app.get("/api/data", async (req, res) => {
@@ -233,12 +238,14 @@ WHERE
       series: {
         id: card.series_id,
         name: card.series_name,
-      }
+      },
     });
     console.log("données récupéres : ", card);
   } catch (error) {
     console.error("Erreur lors de la récupération de la carte:", error);
-    res.status(500).json({ message: "Erreur lors de la récupération des données." });
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la récupération des données." });
   }
 });
 
@@ -277,7 +284,7 @@ app.put("/api/update-card/:id", upload.single("image"), async (req, res) => {
       category_id,
       rarity_id,
       series_id,
-      image_url, 
+      image_url,
       id,
     ];
 
@@ -287,28 +294,110 @@ app.put("/api/update-card/:id", upload.single("image"), async (req, res) => {
       return res.status(404).json({ message: "Carte non trouvée." });
     }
 
-    res.status(200).json({ message: "Carte mise à jour avec succès.", card: result.rows[0] });
+    res
+      .status(200)
+      .json({
+        message: "Carte mise à jour avec succès.",
+        card: result.rows[0],
+      });
   } catch (error) {
     console.error("Erreur lors de la mise à jour de la carte :", error);
     res.status(500).json({ message: "Erreur serveur." });
   }
 });
 
-//Suppression d'une carte 
-app.delete("/api/delete/:id",async(req,res)=>{
+//Suppression d'une carte
+app.delete("/api/delete/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('DELETE FROM public.cards WHERE id =$1', [id]);
+    const result = await pool.query("DELETE FROM public.cards WHERE id =$1", [
+      id,
+    ]);
     if (result.rowCount > 0) {
-        res.status(200).json({ message: `Carte supprimée avec succès.` });
+      res.status(200).json({ message: `Carte supprimée avec succès.` });
     } else {
-        res.status(404).json({ message: `Carte avec l'id ${id} introuvable.` });
+      res.status(404).json({ message: `Carte avec l'id ${id} introuvable.` });
     }
-} catch (error) {
-    console.error('Erreur lors de la suppression :', error);
-    res.status(500).json({ message: 'Erreur interne du serveur.' });
-}
+  } catch (error) {
+    console.error("Erreur lors de la suppression :", error);
+    res.status(500).json({ message: "Erreur interne du serveur." });
+  }
 });
+
+// Création d'un utilisateur
+app.post("/api/register", async (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "Tous les champs sont requis" });
+  }
+
+  try {
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    if (result.rows.length > 0) {
+      return res.status(400).json({ message: "L'email est déjà utilisé" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const insertQuery = `
+      INSERT INTO users (username, email, password)
+      VALUES ($1, $2, $3)
+      RETURNING id, username, email, created_at;
+    `;
+    const values = [username, email, hashedPassword];
+
+    const insertResult = await pool.query(insertQuery, values);
+
+    return res.status(201).json({
+      message: "Utilisateur créé avec succès",
+      user: insertResult.rows[0],
+    });
+  } catch (error) {
+    console.error("Erreur lors de la création de l'utilisateur", error);
+    res.status(500).json({ message: "Erreur interne du serveur" });
+  }
+});
+
+// Connexion utilisateur
+app.post("/api/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ message: "Email et mot de passe sont requis" });
+  }
+
+  try {
+    // Vérifier si l'utilisateur existe dans la base de données
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({ message: "Utilisateur non trouvé" });
+    }
+
+    const user = result.rows[0];
+
+    // Vérifier si le mot de passe est correct
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Mot de passe incorrect" });
+    }
+
+    // Connexion réussie, répondre avec un message de succès
+    return res.status(200).json({ message: "Connexion réussie" });
+  } catch (error) {
+    console.error("Erreur de connexion", error);
+    res.status(500).json({ message: "Erreur interne du serveur" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`API en cours d'exécution sur http://localhost:${port}`);
 });

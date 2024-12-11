@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Créer un compte</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <div class="form-container">
+    <form (ngSubmit)="onSubmit()">
+      <!-- Nom d'utilisateur -->
+      <ion-item lines="none" class="form-item">
+        <ion-label position="floating">Nom d'utilisateur</ion-label>
+        <ion-input [(ngModel)]="username" name="username" required></ion-input>
+      </ion-item>
+
+      <!-- Email -->
+      <ion-item lines="none" class="form-item">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
+      </ion-item>
+
+      <!-- Mot de passe -->
+      <ion-item lines="none" class="form-item">
+        <ion-label position="floating">Mot de passe</ion-label>
+        <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
+      </ion-item>
+
+      <!-- Confirmer le mot de passe -->
+      <ion-item lines="none" class="form-item">
+        <ion-label position="floating">Confirmer le mot de passe</ion-label>
+        <ion-input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required></ion-input>
+      </ion-item>
+
+      <!-- Message d'erreur -->
+      <div *ngIf="password && confirmPassword && password !== confirmPassword" class="error-message">
+        <ion-text color="danger">Les mots de passe ne correspondent pas.</ion-text>
+      </div>
+
+      <!-- Bouton de soumission -->
+      <ion-button expand="full" type="submit" [disabled]="!username || !email || !password || !confirmPassword || password !== confirmPassword" class="submit-btn">
+        Créer un compte
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

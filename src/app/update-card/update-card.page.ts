@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-update-card',
@@ -14,7 +16,7 @@ export class UpdateCardPage implements OnInit {
   formData: any = {};
   selectedImage: any;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+  constructor(private apiService: ApiService, private route: ActivatedRoute,private router: Router) {}
 
   ngOnInit() {
     this.getCardDetails();
@@ -92,6 +94,7 @@ export class UpdateCardPage implements OnInit {
     this.apiService.updateCard(updatedCard).subscribe({
       next: () => {
         alert('Carte modifiée avec succès !');
+        this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Erreur lors de la modification de la carte', error);
