@@ -1,0 +1,75 @@
+// Style global du conteneur
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: linear-gradient(145deg, #f3f4f6, #e5e7eb);
+    padding: 16px;
+  }
+  
+  // Style de la carte centrale
+  .login-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  // Titre et sous-titre
+  .login-title {
+    margin-bottom: 24px;
+  
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1e293b;
+    }
+  
+    p {
+      font-size: 14px;
+      color: #64748b;
+    }
+  }
+  
+  // Style des champs de saisie
+  .input-item {
+    --background: #f9fafb;
+    --border-radius: 8px;
+    --highlight-color-focused: #3b82f6;
+    margin-bottom: 16px;
+  }
+  
+  // Bouton de connexion
+  .login-button {
+    --background: #3b82f6;
+    --border-radius: 8px;
+    --box-shadow: 0px 4px 6px rgba(59, 130, 246, 0.4);
+    font-weight: bold;
+    margin-top: 16px;
+    padding: 12px 0;
+    font-size: 16px;
+  
+    &:hover {
+      --background: #2563eb;
+    }
+  }
+  
+  // Lien d'inscription
+  .register-link {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #64748b;
+  
+    a {
+      color: #3b82f6;
+      text-decoration: none;
+  
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }

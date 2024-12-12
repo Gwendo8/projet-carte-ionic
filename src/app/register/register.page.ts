@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../services/api.service'; // Assure-toi que le chemin est correct
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-register',
@@ -15,7 +17,8 @@ export class RegisterPage {
 
   constructor(
     private apiService: ApiService, // Injection du service API
-    private toastController: ToastController
+    private toastController: ToastController,
+    private router : Router
   ) {}
 
   // Fonction appelée lors de la soumission du formulaire
@@ -48,6 +51,7 @@ export class RegisterPage {
         this.email = '';
         this.password = '';
         this.confirmPassword = '';
+        this.router.navigate(['/login']);
       },
       async (error) => {
         // Afficher un message d'erreur

@@ -11,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UpdateCardPage } from './update-card/update-card.page';
 import { FormsModule } from '@angular/forms'; // Assurez-vous que c'est bien importé
 import { RegisterPage } from './register/register.page';
-
+import { LoginPage } from './login/login.page';
 
 
 

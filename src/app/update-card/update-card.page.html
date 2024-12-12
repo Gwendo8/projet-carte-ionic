@@ -1,5 +1,10 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>Modifier la carte</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -19,16 +24,16 @@
           />
         </ion-item>
 
-        <ion-card-header>
-          <ion-card-title>
-            <ion-input
-              [(ngModel)]="card.name"
-              name="name"
-              placeholder="Nom"
-              class="input-field"
-            ></ion-input>
-          </ion-card-title>
-        </ion-card-header>
+        <ion-item class="form-item">
+          <ion-label position="stacked">Nom</ion-label>
+          <ion-input
+            [(ngModel)]="card.name"
+            name="name"
+            placeholder="Nom de la carte"
+            class="input-field"
+            type="text"
+          ></ion-input>
+        </ion-item>
 
         <ion-card-content>
           <ion-item class="form-item">

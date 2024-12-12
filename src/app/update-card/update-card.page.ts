@@ -102,4 +102,7 @@ export class UpdateCardPage implements OnInit {
       },
     });
   }
+  goBack() {
+    this.router.navigate(['/home']);
+  }
 }

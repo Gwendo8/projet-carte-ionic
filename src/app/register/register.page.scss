@@ -1,90 +1,82 @@
-ion-content {
+// Conteneur principal
+.register-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 20px;
+  height: 100%;
+  background: linear-gradient(145deg, #f3f4f6, #e5e7eb);
+  padding: 16px;
 }
 
-//Contenue du formulaire
-.form-container {
+// Carte centrale
+.register-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  max-width: 400px;
   width: 100%;
-  max-width: 500px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-/* Header */
-ion-header {
-  --background: #007bff;
+// Titre et sous-titre
+.register-title {
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e293b;
+  }
+
+  p {
+    font-size: 14px;
+    color: #64748b;
+  }
 }
 
-ion-toolbar {
-  --background: #007bff;
+// Champs de saisie
+.input-item {
+  --background: #f9fafb;
+  --border-radius: 8px;
+  --highlight-color-focused: #3b82f6;
+  margin-bottom: 16px;
 }
 
-ion-title {
-  color: white;
-  font-size: 20px;
+// Bouton de soumission
+.register-button {
+  --background: #10b981;
+  --border-radius: 8px;
+  --box-shadow: 0px 4px 6px rgba(16, 185, 129, 0.4);
   font-weight: bold;
-}
-
-/* Form Items */
-.form-item {
-  margin-bottom: 20px;
-}
-
-ion-label {
+  margin-top: 16px;
+  padding: 12px 0;
   font-size: 16px;
-  font-weight: 600;
-  color: #333;
+
+  &:hover {
+    --background: #059669;
+  }
 }
 
-ion-input {
-  --padding-start: 12px;
-  --padding-end: 12px;
-}
-
-/* Erreur */
+// Message d'erreur
 .error-message {
-  margin-top: 10px;
-  background-color: #f8d7da;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
+  margin: 8px 0 16px;
+  font-size: 14px;
+  color: #dc2626;
+  text-align: left;
 }
 
-/* Bouton */
-ion-button {
-  margin-top: 20px;
-  --background: #28a745;
-  --border-radius: 10px;
-  font-weight: 700;
-  --color: white;
-  --box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
+.login-link {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #64748b;
 
-ion-button[disabled] {
-  --background: #bdbdbd;
-  --box-shadow: none;
-}
+  a {
+    color: #3b82f6;
+    text-decoration: none;
 
-ion-button:active {
-  --background: #218838;
-}
-
-ion-button[disabled]:active {
-  --background: #bdbdbd;
-}
-
-ion-item.ion-focused ion-input {
-  --highlight-background-color: rgba(0, 123, 255, 0.1);
-}
-
-/* Éléments de formulaire au survol */
-ion-item:hover ion-label {
-  color: #007bff;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
