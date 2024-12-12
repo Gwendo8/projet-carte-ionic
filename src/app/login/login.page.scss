@@ -1,4 +1,3 @@
-// Style global du conteneur
 .login-container {
     display: flex;
     justify-content: center;
@@ -8,7 +7,6 @@
     padding: 16px;
   }
   
-  // Style de la carte centrale
   .login-card {
     background: #ffffff;
     border-radius: 16px;
@@ -19,7 +17,6 @@
     text-align: center;
   }
   
-  // Titre et sous-titre
   .login-title {
     margin-bottom: 24px;
   
@@ -35,7 +32,6 @@
     }
   }
   
-  // Style des champs de saisie
   .input-item {
     --background: #f9fafb;
     --border-radius: 8px;
@@ -43,7 +39,6 @@
     margin-bottom: 16px;
   }
   
-  // Bouton de connexion
   .login-button {
     --background: #3b82f6;
     --border-radius: 8px;
@@ -58,7 +53,6 @@
     }
   }
   
-  // Lien d'inscription
   .register-link {
     margin-top: 16px;
     font-size: 14px;

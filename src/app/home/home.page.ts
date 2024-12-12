@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
 import { CardDetailsModalComponent } from '../card-details-modal/card-details-modal.component';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -11,14 +12,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  data: any[] = []; // Toutes les données récupérées
-  filteredData: any[] = []; // Données filtrées affichées
+  data: any[] = []; 
+  filteredData: any[] = []; 
   searchTerm: string = '';
+  userMenuOpen = false;
+  username = 'Nom d\'utilisateur'
 
   constructor(
     private apiService: ApiService,
     private modalController: ModalController,
-    private router: Router
+    private router: Router,
+    private navController: NavController
   ) {}
 
   navigateToUpdate(cardId: number) {
@@ -29,7 +33,7 @@ export class HomePage implements OnInit {
     this.loadData();
   }
 
-  // Permet de recharger la page home directement après l'ajout d'une carte
+  // Permet de recharger la page directement après l'ajout d'une carte
   ionViewWillEnter() {
     this.loadData();
   }
@@ -41,7 +45,7 @@ export class HomePage implements OnInit {
   loadData() {
     this.apiService.getData().subscribe(
       (response) => {
-        this.data = response; // Stocker les données récupérées
+        this.data = response; 
         this.filteredData = this.data;
         console.log(this.data);
       },
@@ -63,7 +67,7 @@ export class HomePage implements OnInit {
     );
   }
 
-  // Méthode pour ouvrir la modale
+  // Méthode pour ouvrir le modale
   async openCardDetails(card: any,event: Event) {
     event.stopPropagation();
     const modal = await this.modalController.create({
@@ -93,4 +97,17 @@ export class HomePage implements OnInit {
       });
     }
   }
+
+   // Ouvrir/fermer le menu utilisateur
+   toggleUserMenu() {
+    this.userMenuOpen = !this.userMenuOpen;
+  }
+
+  goToProfile() {
+    this.navController.navigateForward('/profile');
+  }
+
+  logout() {
+  }
+
 }

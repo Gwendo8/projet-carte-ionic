@@ -2,22 +2,24 @@
   <ion-toolbar>
     <ion-title>Liste des cartes</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/add-card">
-        <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+      <ion-button (click)="toggleUserMenu()">
+        <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Barre de recherche -->
   <ion-searchbar 
     placeholder="Rechercher une carte par son nom"
     [(ngModel)]="searchTerm"
     (ionInput)="filterCards($event)">
   </ion-searchbar>
 
-  <!-- Liste des cartes filtrées -->
+  <ion-button expand="full" routerLink="/add-card" class="add-card-button">
+    Ajouter une carte
+  </ion-button>
+
   <ion-list>
     <ion-item *ngFor="let item of filteredData" class="card-item">
       <ion-card>
@@ -29,7 +31,6 @@
             <div class="card-category">{{ item.category_name }}</div>
           </div>
         </div>
-    
         <div class="card-stats">
           <div class="stat" *ngIf="item.health_points">
             <span class="stat-label">HP</span>
@@ -44,12 +45,9 @@
             <span class="stat-value">{{ item.defense_points }}</span>
           </div>
         </div>
-    
         <ion-card-content>
           <p class="card-description">{{ item.card_description }}</p>
         </ion-card-content>
-    
-        <!-- Boutons d'action -->
         <div class="card-actions">
           <ion-button 
             (click)="openCardDetails(item, $event)" 
@@ -70,5 +68,11 @@
 
   <div *ngIf="filteredData.length === 0" class="no-data">
     <p>Aucune donnée disponible.</p>
+  </div>
+
+  <div *ngIf="userMenuOpen" class="user-menu">
+    <p>{{ username }}</p>
+    <ion-button (click)="goToProfile()">Modifier le profil</ion-button>
+    <ion-button (click)="logout()">Déconnexion</ion-button>
   </div>
 </ion-content>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../services/api.service'; // Vérifie que le chemin est correct
+import { ApiService } from '../services/api.service'; 
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -26,12 +26,10 @@ export class LoginPage {
 
     this.apiService.login(this.email, this.password).subscribe({
       next: async (response) => {
-        // Connexion réussie
         await this.showToast('Connexion réussie.');
         this.router.navigate(['/home']);
       },
       error: async (error) => {
-        // Gestion des erreurs
         const message =
           error.status === 401
             ? 'Identifiants incorrects.'

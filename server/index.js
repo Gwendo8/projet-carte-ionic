@@ -10,15 +10,13 @@ const bcrypt = require("bcryptjs");
 const app = express();
 const port = 3000;
 
-// Middleware CORS
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(bodyParser.json({ limit: "50mb" })); // Limite à 50 Mo pour les données JSON
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true })); // Limite à 50 Mo pour les données URL encodées
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true })); // Limite à 50 Mo pour les données URL 
 
-// Configuration de la base de données PostgreSQL
 const pool = new Pool({
   host: "localhost",
   user: "postgres",
@@ -27,7 +25,7 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Configuration du stockage des fichiers avec multer
+// Stockage des fichiers 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "..", "src", "assets", "images")); // Dossier de destination
@@ -39,28 +37,25 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  // Accepter seulement les images
+  // Accepte seulement les images de ce type
   const fileTypes = /jpeg|jpg|png|webp|gif/;
   const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = fileTypes.test(file.mimetype);
 
   if (extname && mimetype) {
-    return cb(null, true); // Fichier valide
+    return cb(null, true); 
   } else {
     cb(new Error("Seules les images sont autorisées."));
   }
 };
 
-// Configuration de Multer avec une limite de taille de 50 Mo
 const upload = multer({
   storage,
   fileFilter,
   limits: { fileSize: 50 * 1024 * 1024 }, // Limite de 50 Mo
 });
 
-// Middleware pour servir les fichiers statiques (images)
 app.use("/images", express.static(path.join(__dirname, "assets", "images")));
-
 
 
 // Récupération des cartes
@@ -373,7 +368,6 @@ app.post("/api/login", async (req, res) => {
   }
 
   try {
-    // Vérifier si l'utilisateur existe dans la base de données
     const result = await pool.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
@@ -384,13 +378,11 @@ app.post("/api/login", async (req, res) => {
 
     const user = result.rows[0];
 
-    // Vérifier si le mot de passe est correct
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Mot de passe incorrect" });
     }
 
-    // Connexion réussie, répondre avec un message de succès
     return res.status(200).json({ message: "Connexion réussie" });
   } catch (error) {
     console.error("Erreur de connexion", error);

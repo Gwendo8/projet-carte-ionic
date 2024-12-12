@@ -1,4 +1,23 @@
-/* Style pour la carte */
+.add-card-button {
+  margin-top: 16px;
+  background-color: #4CAF50; /* Couleur verte pour un design plus professionnel */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+.add-card-button:hover {
+  background-color: #45a049; /* Couleur verte un peu plus foncée lors du survol */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+ion-searchbar {
+  margin-bottom: 16px; /* Espacement pour éviter que le bouton soit trop près de la barre de recherche */
+}
+
 .card-item {
   margin-bottom: 20px;
 }
@@ -151,8 +170,26 @@ ion-toolbar {
         font-size: 50px;
       }
       &:hover {
-        --color: #004d40; /* Couleur légèrement plus foncée au survol */
+        --color: #004d40; 
       }
     }
   }
+}
+
+.user-menu {
+  position: absolute;
+  top: 60px; 
+  right: 10px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.user-menu ion-button {
+  margin-top: 10px;
+  width: 100%;
 }
