@@ -4,6 +4,7 @@ import { ApiService } from '../services/api.service';
 import { CardDetailsModalComponent } from '../card-details-modal/card-details-modal.component';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class HomePage implements OnInit {
   filteredData: any[] = []; 
   searchTerm: string = '';
   userMenuOpen = false;
+  profileImageUrl: string = '/assets/images/sasuke.jpeg'; 
   username = 'Nom d\'utilisateur'
 
   constructor(
@@ -30,7 +32,7 @@ export class HomePage implements OnInit {
 }
 
 ngOnInit() {
-  const storedUsername = localStorage.getItem('username'); // Récupérer le username
+  const storedUsername = localStorage.getItem('username'); 
   if (storedUsername) {
     this.username = storedUsername;
   }
@@ -112,6 +114,24 @@ ngOnInit() {
   }
 
   logout() {
+    localStorage.removeItem('username');
+    this.router.navigate(['/']);
+  }
+
+  async takeProfilePhoto() {
+    try {
+      const photo = await Camera.getPhoto({
+        quality: 100,
+        source: CameraSource.Camera,  // Utilise la caméra pour prendre la photo
+        resultType: CameraResultType.DataUrl // Retourne l'image sous forme de DataUrl
+      });
+  
+      // Met à jour l'URL de l'image de profil avec la photo prise, avec une valeur par défaut
+      this.profileImageUrl = photo.webPath ?? photo.dataUrl ?? '/assets/images/default-profile.jpg';
+  
+    } catch (error) {
+      console.error('Erreur lors de la prise de la photo', error);
+    }
   }
 
 }

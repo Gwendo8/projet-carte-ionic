@@ -1,78 +1,111 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Liste des cartes</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleUserMenu()">
-        <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-menu side="end" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Utilisateur</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <!-- Image de profil -->
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img 
+        [src]="profileImageUrl" 
+        alt="Photo de profil" 
+        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+    </div>
 
-<ion-content>
-  <ion-searchbar 
-    placeholder="Rechercher une carte par son nom"
-    [(ngModel)]="searchTerm"
-    (ionInput)="filterCards($event)">
-  </ion-searchbar>
+    <!-- Nom de l'utilisateur -->
+    <p style="text-align: center; font-weight: bold;">{{ username }}</p>
 
-  <ion-button expand="full" routerLink="/add-card" class="add-card-button">
-    Ajouter une carte
-  </ion-button>
+    <!-- Bouton pour prendre une photo -->
+    <ion-button expand="full" (click)="takeProfilePhoto()">
+      Prendre une photo
+    </ion-button>
 
-  <ion-list>
-    <ion-item *ngFor="let item of filteredData" class="card-item">
-      <ion-card>
-        <div (click)="navigateToUpdate(item.card_id)" class="card-link">
-          <div class="card-image-container">
-            <img [src]="item.image_url" alt="{{ item.card_name }}" class="card-image">
-            <div class="card-rarity">{{ item.rarity_name }}</div>
-            <div class="card-title">{{ item.card_name }}</div>
-            <div class="card-category">{{ item.category_name }}</div>
+    <!-- Liste d'options -->
+    <ion-list>
+      <ion-item button (click)="goToProfile()">
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        Modifier le profil
+      </ion-item>
+      <ion-item button (click)="logout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        Déconnexion
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Liste des cartes</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-button>
+          <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
+        </ion-menu-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-searchbar 
+      placeholder="Rechercher une carte par son nom"
+      [(ngModel)]="searchTerm"
+      (ionInput)="filterCards($event)">
+    </ion-searchbar>
+
+    <ion-button expand="full" routerLink="/add-card" class="add-card-button">
+      Ajouter une carte
+    </ion-button>
+
+    <ion-list>
+      <ion-item *ngFor="let item of filteredData" class="card-item">
+        <ion-card>
+          <div (click)="navigateToUpdate(item.card_id)" class="card-link">
+            <div class="card-image-container">
+              <img [src]="item.image_url" alt="{{ item.card_name }}" class="card-image">
+              <div class="card-rarity">{{ item.rarity_name }}</div>
+              <div class="card-title">{{ item.card_name }}</div>
+              <div class="card-category">{{ item.category_name }}</div>
+            </div>
           </div>
-        </div>
-        <div class="card-stats">
-          <div class="stat" *ngIf="item.health_points">
-            <span class="stat-label">HP</span>
-            <span class="stat-value">{{ item.health_points }}</span>
+          <div class="card-stats">
+            <div class="stat" *ngIf="item.health_points">
+              <span class="stat-label">HP</span>
+              <span class="stat-value">{{ item.health_points }}</span>
+            </div>
+            <div class="stat" *ngIf="item.attack_points">
+              <span class="stat-label">ATK</span>
+              <span class="stat-value">{{ item.attack_points }}</span>
+            </div>
+            <div class="stat" *ngIf="item.defense_points">
+              <span class="stat-label">DEF</span>
+              <span class="stat-value">{{ item.defense_points }}</span>
+            </div>
           </div>
-          <div class="stat" *ngIf="item.attack_points">
-            <span class="stat-label">ATK</span>
-            <span class="stat-value">{{ item.attack_points }}</span>
+          <ion-card-content>
+            <p class="card-description">{{ item.card_description }}</p>
+          </ion-card-content>
+          <div class="card-actions">
+            <ion-button 
+              (click)="openCardDetails(item, $event)" 
+              expand="block" 
+              color="primary">
+              Voir les détails
+            </ion-button>
+            <ion-button 
+              expand="block" 
+              color="danger" 
+              (click)="deleteCard(item.card_id, $event)">
+              Supprimer
+            </ion-button>
           </div>
-          <div class="stat" *ngIf="item.defense_points">
-            <span class="stat-label">DEF</span>
-            <span class="stat-value">{{ item.defense_points }}</span>
-          </div>
-        </div>
-        <ion-card-content>
-          <p class="card-description">{{ item.card_description }}</p>
-        </ion-card-content>
-        <div class="card-actions">
-          <ion-button 
-            (click)="openCardDetails(item, $event)" 
-            expand="block" 
-            color="primary">
-            Voir les détails
-          </ion-button>
-          <ion-button 
-            expand="block" 
-            color="danger" 
-            (click)="deleteCard(item.card_id, $event)">
-            Supprimer
-          </ion-button>
-        </div>
-      </ion-card>
-    </ion-item>
-  </ion-list>
+        </ion-card>
+      </ion-item>
+    </ion-list>
 
-  <div *ngIf="filteredData.length === 0" class="no-data">
-    <p>Aucune donnée disponible.</p>
-  </div>
-
-  <div *ngIf="userMenuOpen" class="user-menu">
-    <p>{{ username }}</p>
-    <ion-button (click)="goToProfile()">Modifier le profil</ion-button>
-    <ion-button (click)="logout()">Déconnexion</ion-button>
-  </div>
-</ion-content>
+    <div *ngIf="filteredData.length === 0" class="no-data">
+      <p>Aucune donnée disponible.</p>
+    </div>
+  </ion-content>
+</div>

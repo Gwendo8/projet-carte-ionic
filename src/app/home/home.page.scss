@@ -176,20 +176,18 @@ ion-toolbar {
   }
 }
 
-.user-menu {
-  position: absolute;
-  top: 60px; 
-  right: 10px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+ion-menu {
+  --background: rgba(0, 0, 0, 0.7); /* Fond sombre semi-transparent */
+  color: white;
 }
 
-.user-menu ion-button {
-  margin-top: 10px;
-  width: 100%;
+
+
+ion-item {
+  --background-hover: rgba(255, 255, 255, 0.1); /* Fond léger au survol */
+  --color: black;
+}
+
+ion-icon {
+  color: #ffcc00; /* Icônes dorées */
 }
