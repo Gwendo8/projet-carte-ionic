@@ -383,7 +383,11 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ message: "Mot de passe incorrect" });
     }
 
-    return res.status(200).json({ message: "Connexion réussie" });
+    // Inclure le `username` dans la réponse
+    return res.status(200).json({
+      message: "Connexion réussie",
+      username: user.username, // Ajouter ici
+    });
   } catch (error) {
     console.error("Erreur de connexion", error);
     res.status(500).json({ message: "Erreur interne du serveur" });

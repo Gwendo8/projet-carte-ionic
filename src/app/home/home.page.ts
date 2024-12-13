@@ -29,9 +29,13 @@ export class HomePage implements OnInit {
   this.router.navigate(['/update-card', cardId]);
 }
 
-  ngOnInit() {
-    this.loadData();
+ngOnInit() {
+  const storedUsername = localStorage.getItem('username'); // Récupérer le username
+  if (storedUsername) {
+    this.username = storedUsername;
   }
+  this.loadData();
+}
 
   // Permet de recharger la page directement après l'ajout d'une carte
   ionViewWillEnter() {

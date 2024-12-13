@@ -47,7 +47,7 @@ export class RegisterPage {
         this.email = '';
         this.password = '';
         this.confirmPassword = '';
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       },
       async (error) => {
         this.showErrorToast('Erreur lors de la création du compte.');

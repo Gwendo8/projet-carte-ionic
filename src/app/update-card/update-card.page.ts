@@ -23,7 +23,7 @@ export class UpdateCardPage implements OnInit {
     this.getFormData();
   }
 
-  // Récupérer les détails de la carte en fonction de l'ID
+  // Récupère les détails de la carte en fonction de l'ID
   getCardDetails() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -50,7 +50,7 @@ export class UpdateCardPage implements OnInit {
     }
   }
 
-  // Récupérer les données de formulaire pour les listes déroulantes
+  // Récupère les données de formulaire pour les listes déroulantes
   getFormData() {
     this.apiService.getListData().subscribe({
       next: (data) => {

@@ -23,9 +23,10 @@ export class LoginPage {
       this.showToast('Veuillez remplir tous les champs.');
       return;
     }
-
+  
     this.apiService.login(this.email, this.password).subscribe({
       next: async (response) => {
+        localStorage.setItem('username', response.username); // Stocker le username
         await this.showToast('Connexion réussie.');
         this.router.navigate(['/home']);
       },
