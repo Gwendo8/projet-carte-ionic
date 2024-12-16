@@ -22,8 +22,8 @@ export class ApiService {
   getCardById(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/data/${id}`);
   }
-  updateCard(card: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update-card/${card.id}`, card);
+  updateCard(id: number, data: FormData) {
+    return this.http.put(`${this.baseUrl}/update-card/${id}`, data);
   }
   deleteCard(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete/${id}`);

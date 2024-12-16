@@ -50,7 +50,7 @@ export class UpdateCardPage implements OnInit {
     }
   }
 
-  // Récupère les données de formulaire pour les listes déroulantes
+  // Récupère les données des formulaires pour les listes déroulantes
   getFormData() {
     this.apiService.getListData().subscribe({
       next: (data) => {
@@ -70,28 +70,28 @@ export class UpdateCardPage implements OnInit {
   onImageChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImage = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      this.selectedImage = file; 
     }
   }
 
   // Fonction pour mettre à jour la carte
   updateCard() {
+    const formData = new FormData();
+  
+    formData.append('name', this.card.name);
+    formData.append('description', this.card.description);
+    formData.append('health_points', this.card.health_points.toString());
+    formData.append('attack_points', this.card.attack_points.toString());
+    formData.append('defense_points', this.card.defense_points.toString());
+    formData.append('category_id', this.card.category.id);
+    formData.append('rarity_id', this.card.rarity.id);
+    formData.append('series_id', this.card.series.id);
+  
     if (this.selectedImage) {
-      this.card.image_url = this.selectedImage;
+      formData.append('image', this.selectedImage); 
     }
-
-    const updatedCard = {
-      ...this.card,
-      category_id: this.card.category.id,
-      series_id: this.card.series.id,
-      rarity_id: this.card.rarity.id,
-    };
-
-    this.apiService.updateCard(updatedCard).subscribe({
+  
+    this.apiService.updateCard(this.card.id, formData).subscribe({
       next: () => {
         alert('Carte modifiée avec succès !');
         this.router.navigate(['/home']);
