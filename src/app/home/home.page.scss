@@ -1,6 +1,6 @@
 .add-card-button {
   margin-top: 16px;
-  background-color: #4CAF50; /* Couleur verte pour un design plus professionnel */
+  background-color: #4CAF50; 
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -10,12 +10,12 @@
 }
 
 .add-card-button:hover {
-  background-color: #45a049; /* Couleur verte un peu plus foncée lors du survol */
+  background-color: #45a049; 
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 ion-searchbar {
-  margin-bottom: 16px; /* Espacement pour éviter que le bouton soit trop près de la barre de recherche */
+  margin-bottom: 16px;
 }
 
 .card-item {
@@ -177,17 +177,17 @@ ion-toolbar {
 }
 
 ion-menu {
-  --background: rgba(0, 0, 0, 0.7); /* Fond sombre semi-transparent */
+  --background: rgba(0, 0, 0, 0.7); 
   color: white;
 }
 
 
 
 ion-item {
-  --background-hover: rgba(255, 255, 255, 0.1); /* Fond léger au survol */
+  --background-hover: rgba(255, 255, 255, 0.1); 
   --color: black;
 }
 
 ion-icon {
-  color: #ffcc00; /* Icônes dorées */
+  color: #ffcc00; 
 }

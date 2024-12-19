@@ -1,0 +1,131 @@
+$primary-color: #5e81f4;
+$accent-color: #ff6f61;
+$background-color: #f4f7fc;
+$text-color: #333333;
+$block-bg-color: #ffffff;
+$footer-bg-color: #3a3a3a;
+
+ion-content {
+  background-color: $background-color;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+}
+
+.intro-section {
+  text-align: center;
+  margin-top: 10px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.app-logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $primary-color;
+  margin-bottom: 10px;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.main-description {
+  font-size: 1.2rem;
+  color: $text-color;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.features-section {
+  margin-top: 30px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: $primary-color;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.features-blocks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.feature-block {
+  background-color: $block-bg-color;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-block:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  color: $primary-color;
+  margin-bottom: 10px;
+}
+
+.feature-block h4 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: $primary-color;
+  margin-bottom: 10px;
+}
+
+.feature-block p {
+  font-size: 1rem;
+  color: $text-color;
+  line-height: 1.4;
+}
+
+ion-tabs {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+ion-content {
+  padding-bottom: 56px;
+  background-color: #f4f7fc;
+  overflow-y: auto;
+}
+
+.content-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-bottom: 56px;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

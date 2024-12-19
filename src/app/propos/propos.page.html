@@ -1,0 +1,143 @@
+<ion-menu side="end" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Utilisateur</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div style="text-align: center; margin-bottom: 20px">
+      <img
+        [src]="profileImageUrl"
+        alt="Photo de profil"
+        style="
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          object-fit: cover;
+        "
+      />
+    </div>
+
+    <p style="text-align: center; font-weight: bold">{{ username }}</p>
+
+    <ion-button expand="full" (click)="takeProfilePhoto()">
+      Prendre une photo
+    </ion-button>
+
+    <ion-list>
+      <ion-item routerLink="/accueil" routerDirection="root">
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+        Accueil
+      </ion-item>
+
+      <ion-item routerLink="/home" routerDirection="root">
+        <ion-icon slot="start" name="list-outline"></ion-icon>
+        Liste
+      </ion-item>
+
+      <ion-item routerLink="/propos" routerDirection="root">
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+        À propos
+      </ion-item>
+
+      <ion-item button (click)="logout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        Déconnexion
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>A propos</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-button>
+          <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
+        </ion-menu-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div class="block">
+      <div class="image-container">
+        <img src="assets/images/me.jpg" alt="Photo de Gwendoline" />
+      </div>
+      <h1>Gwendoline Dardari</h1>
+      <p>Étudiante en développement et réalisation d'application</p>
+    </div>
+    <div class="block">
+      <h2>Mes objectifs</h2>
+      <p>Je souhaite me spécialiser dans le développement web et mobile.</p>
+    </div>
+    <div class="block">
+      <h2>Mes compétences</h2>
+      <ul class="skills-list">
+        <li>
+          <ion-icon name="logo-html5" class="skill-icon"></ion-icon>
+          HTML
+        </li>
+        <li>
+          <ion-icon name="logo-css3" class="skill-icon"></ion-icon>
+          CSS
+        </li>
+        <li>
+          <ion-icon name="logo-javascript" class="skill-icon"></ion-icon>
+          JavaScript
+        </li>
+        <li>
+          <ion-icon name="code-outline" class="skill-icon"></ion-icon>
+          PHP
+        </li>
+        <li>
+          <ion-icon name="logo-react" class="skill-icon"></ion-icon>
+          React
+        </li>
+        <li>
+          <ion-icon name="logo-angular" class="skill-icon"></ion-icon>
+          Angular
+        </li>
+        <li>
+          <ion-icon name="layers-outline" class="skill-icon"></ion-icon>
+          Symfony
+        </li>
+      </ul>
+    </div>
+    <div class="block">
+      <h2>À propos de l'application</h2>
+      <p>
+        Cette application vous permet de gérer vos cartes d'animées. Ajoutez,
+        modifiez, supprimez ou recherchez vos cartes facilement.
+      </p>
+    </div>
+    <div class="block contact-block">
+      <h2>Me Contacter</h2>
+      <p>
+        Vous avez une question, une suggestion ou vous souhaitez simplement
+        échanger ? N'hésitez pas à me joindre !
+      </p>
+
+      <div class="contact-options">
+        <div class="contact-option">
+          <ion-icon name="mail-outline" class="contact-icon"></ion-icon>
+          <a href="mailto:gwendolinedardari7&#64;gmail.com"
+            >gwendolinedardari7&#64;gmail.com</a
+          >
+        </div>
+        <div class="contact-option">
+          <ion-icon name="logo-linkedin" class="contact-icon"></ion-icon>
+          <a
+            href="https://www.linkedin.com/in/gwendoline-d-5338601ab/"
+            target="_blank"
+            >LinkedIn</a
+          >
+        </div>
+        <div class="contact-option">
+          <ion-icon name="logo-github" class="contact-icon"></ion-icon>
+          <a href="https://github.com/Gwendo8?" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</div>

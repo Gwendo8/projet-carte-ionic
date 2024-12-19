@@ -6,19 +6,18 @@ import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  data: any[] = []; 
-  filteredData: any[] = []; 
+  data: any[] = [];
+  filteredData: any[] = [];
   searchTerm: string = '';
   userMenuOpen = false;
-  profileImageUrl: string = '/assets/images/sasuke.jpeg'; 
-  username = 'Nom d\'utilisateur'
+  profileImageUrl: string = '/assets/images/sasuke.jpeg';
+  username = "Nom d'utilisateur";
 
   constructor(
     private apiService: ApiService,
@@ -28,16 +27,16 @@ export class HomePage implements OnInit {
   ) {}
 
   navigateToUpdate(cardId: number) {
-  this.router.navigate(['/update-card', cardId]);
-}
-
-ngOnInit() {
-  const storedUsername = localStorage.getItem('username'); 
-  if (storedUsername) {
-    this.username = storedUsername;
+    this.router.navigate(['/update-card', cardId]);
   }
-  this.loadData();
-}
+
+  ngOnInit() {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      this.username = storedUsername;
+    }
+    this.loadData();
+  }
 
   // Permet de recharger la page directement après l'ajout d'une carte
   ionViewWillEnter() {
@@ -51,7 +50,7 @@ ngOnInit() {
   loadData() {
     this.apiService.getData().subscribe(
       (response) => {
-        this.data = response; 
+        this.data = response;
         this.filteredData = this.data;
         console.log(this.data);
       },
@@ -74,7 +73,7 @@ ngOnInit() {
   }
 
   // Méthode pour ouvrir le modale
-  async openCardDetails(card: any,event: Event) {
+  async openCardDetails(card: any, event: Event) {
     event.stopPropagation();
     const modal = await this.modalController.create({
       component: CardDetailsModalComponent,
@@ -86,14 +85,16 @@ ngOnInit() {
   }
 
   // Méthode pour supprimer une carte
-  deleteCard(id: number, event:Event) {
+  deleteCard(id: number, event: Event) {
     event.stopPropagation();
     if (confirm('Êtes-vous sûr de vouloir supprimer cette carte ?')) {
       this.apiService.deleteCard(id).subscribe({
         next: (response) => {
-          alert(response.message); 
-          this.data = this.data.filter((card) => card.id !== id); 
-          this.filteredData = this.filteredData.filter((card) => card.id !== id); 
+          alert(response.message);
+          this.data = this.data.filter((card) => card.id !== id);
+          this.filteredData = this.filteredData.filter(
+            (card) => card.id !== id
+          );
           this.loadData();
         },
         error: (error) => {
@@ -104,8 +105,8 @@ ngOnInit() {
     }
   }
 
-   // Ouvrir/fermer le menu utilisateur
-   toggleUserMenu() {
+  // Ouvrir/fermer le menu utilisateur
+  toggleUserMenu() {
     this.userMenuOpen = !this.userMenuOpen;
   }
 
@@ -122,16 +123,14 @@ ngOnInit() {
     try {
       const photo = await Camera.getPhoto({
         quality: 100,
-        source: CameraSource.Camera,  // Utilise la caméra pour prendre la photo
-        resultType: CameraResultType.DataUrl // Retourne l'image sous forme de DataUrl
+        source: CameraSource.Camera,
+        resultType: CameraResultType.DataUrl,
       });
-  
-      // Met à jour l'URL de l'image de profil avec la photo prise, avec une valeur par défaut
-      this.profileImageUrl = photo.webPath ?? photo.dataUrl ?? '/assets/images/default-profile.jpg';
-  
+
+      this.profileImageUrl =
+        photo.webPath ?? photo.dataUrl ?? '/assets/images/default-profile.jpg';
     } catch (error) {
       console.error('Erreur lors de la prise de la photo', error);
     }
   }
-
 }

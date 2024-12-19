@@ -5,28 +5,40 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <!-- Image de profil -->
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img 
-        [src]="profileImageUrl" 
-        alt="Photo de profil" 
-        style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+    <div style="text-align: center; margin-bottom: 20px">
+      <img
+        [src]="profileImageUrl"
+        alt="Photo de profil"
+        style="
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          object-fit: cover;
+        "
+      />
     </div>
+    <p style="text-align: center; font-weight: bold">{{ username }}</p>
 
-    <!-- Nom de l'utilisateur -->
-    <p style="text-align: center; font-weight: bold;">{{ username }}</p>
-
-    <!-- Bouton pour prendre une photo -->
     <ion-button expand="full" (click)="takeProfilePhoto()">
       Prendre une photo
     </ion-button>
 
-    <!-- Liste d'options -->
     <ion-list>
-      <ion-item button (click)="goToProfile()">
-        <ion-icon slot="start" name="person-outline"></ion-icon>
-        Modifier le profil
+      <ion-item routerLink="/accueil" routerDirection="root">
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+        Accueil
       </ion-item>
+
+      <ion-item routerLink="/home" routerDirection="root">
+        <ion-icon slot="start" name="list-outline"></ion-icon>
+        Liste
+      </ion-item>
+
+      <ion-item routerLink="/propos" routerDirection="root">
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+        À propos
+      </ion-item>
+
       <ion-item button (click)="logout()">
         <ion-icon slot="start" name="log-out-outline"></ion-icon>
         Déconnexion
@@ -48,10 +60,11 @@
   </ion-header>
 
   <ion-content>
-    <ion-searchbar 
+    <ion-searchbar
       placeholder="Rechercher une carte par son nom"
       [(ngModel)]="searchTerm"
-      (ionInput)="filterCards($event)">
+      (ionInput)="filterCards($event)"
+    >
     </ion-searchbar>
 
     <ion-button expand="full" routerLink="/add-card" class="add-card-button">
@@ -63,7 +76,11 @@
         <ion-card>
           <div (click)="navigateToUpdate(item.card_id)" class="card-link">
             <div class="card-image-container">
-              <img [src]="item.image_url" alt="{{ item.card_name }}" class="card-image">
+              <img
+                [src]="item.image_url"
+                alt="{{ item.card_name }}"
+                class="card-image"
+              />
               <div class="card-rarity">{{ item.rarity_name }}</div>
               <div class="card-title">{{ item.card_name }}</div>
               <div class="card-category">{{ item.category_name }}</div>
@@ -87,16 +104,18 @@
             <p class="card-description">{{ item.card_description }}</p>
           </ion-card-content>
           <div class="card-actions">
-            <ion-button 
-              (click)="openCardDetails(item, $event)" 
-              expand="block" 
-              color="primary">
+            <ion-button
+              (click)="openCardDetails(item, $event)"
+              expand="block"
+              color="primary"
+            >
               Voir les détails
             </ion-button>
-            <ion-button 
-              expand="block" 
-              color="danger" 
-              (click)="deleteCard(item.card_id, $event)">
+            <ion-button
+              expand="block"
+              color="danger"
+              (click)="deleteCard(item.card_id, $event)"
+            >
               Supprimer
             </ion-button>
           </div>

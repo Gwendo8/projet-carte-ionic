@@ -23,6 +23,14 @@ const routes: Routes = [
   {
     path: 'profil',
     loadChildren: () => import('./profil/profil.module').then( m => m.ProfilPageModule)
+  },
+  {
+    path: 'accueil',
+    loadChildren: () => import('./accueil/accueil.module').then( m => m.AccueilPageModule)
+  },
+  {
+    path: 'propos',
+    loadChildren: () => import('./propos/propos.module').then( m => m.ProposPageModule)
   }
 
 ];

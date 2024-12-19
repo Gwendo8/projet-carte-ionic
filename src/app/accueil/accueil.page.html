@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="app-title">Bienvenue sur l'application</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-container">
+  <div class="intro-section">
+    <img
+      src="assets/images/logoo.png"
+      alt="Logo de l'application"
+      class="app-logo"
+    />
+    <h2 class="main-title fade-in">
+      Bienvenue sur mon application de gestion des cartes d'animés
+    </h2>
+    <p class="main-description fade-in">
+      Organisez, gérez et découvrez vos cartes d'animés facilement avec une
+      interface intuitive et moderne.
+    </p>
+  </div>
+
+  <div class="features-section">
+    <h3 class="section-title">Les fonctionnalités clés</h3>
+    <div class="features-blocks">
+      <div class="feature-block fade-up">
+        <ion-icon name="add-circle-outline" class="feature-icon"></ion-icon>
+        <h4>Ajouter une carte</h4>
+      </div>
+      <div class="feature-block fade-up">
+        <ion-icon name="create-outline" class="feature-icon"></ion-icon>
+        <h4>Modifier une carte</h4>
+      </div>
+      <div class="feature-block fade-up">
+        <ion-icon name="trash-bin-outline" class="feature-icon"></ion-icon>
+        <h4>Supprimer une carte</h4>
+      </div>
+      <div class="feature-block fade-up">
+        <ion-icon name="search-outline" class="feature-icon"></ion-icon>
+        <h4>Rechercher une carte</h4>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="accueil" routerLink="/accueil">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Home</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="list" routerLink="/home">
+      <ion-icon name="list-outline"></ion-icon>
+      <ion-label>Liste</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="propos" routerLink="/propos">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <ion-label>À propos</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CardDetailsModalComponent } from './card-details-modal/card-details-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UpdateCardPage } from './update-card/update-card.page';
-import { FormsModule } from '@angular/forms'; // Assurez-vous que c'est bien importé
+import { FormsModule } from '@angular/forms'; 
 import { RegisterPage } from './register/register.page';
 import { LoginPage } from './login/login.page';
 

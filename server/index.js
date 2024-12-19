@@ -14,8 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-app.use(bodyParser.json({ limit: "50mb" })); // Limite à 50 Mo pour les données JSON
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true })); // Limite à 50 Mo pour les données URL 
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 const pool = new Pool({
   host: "localhost",
@@ -25,25 +25,24 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Stockage des fichiers 
+// Stockage des fichiers
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "..", "src", "assets", "images")); // Dossier de destination
+    cb(null, path.join(__dirname, "..", "src", "assets", "images"));
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname)); // Nom unique pour éviter les conflits
+    cb(null, uniqueSuffix + path.extname(file.originalname));
   },
 });
 
 const fileFilter = (req, file, cb) => {
-  // Accepte seulement les images de ce type
   const fileTypes = /jpeg|jpg|png|webp|gif/;
   const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = fileTypes.test(file.mimetype);
 
   if (extname && mimetype) {
-    return cb(null, true); 
+    return cb(null, true);
   } else {
     cb(new Error("Seules les images sont autorisées."));
   }
@@ -52,11 +51,10 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 50 * 1024 * 1024 }, // Limite de 50 Mo
+  limits: { fileSize: 50 * 1024 * 1024 },
 });
 
 app.use("/images", express.static(path.join(__dirname, "assets", "images")));
-
 
 // Récupération des cartes
 app.get("/api/data", async (req, res) => {
@@ -133,7 +131,6 @@ app.post("/api/add-card", upload.single("image"), async (req, res) => {
       series_id,
     } = req.body;
 
-    // Définir l'URL de l'image téléchargée
     const image_url = req.file ? `assets/images/${req.file.filename}` : null;
     console.log("Fichier téléchargé:", req.file);
 
@@ -209,11 +206,10 @@ WHERE
     const result = await pool.query(request, [id]);
 
     if (result.rows.length === 0) {
-      // Aucun résultat trouvé
       return res.status(404).json({ message: "Carte non trouvée." });
     }
 
-    const card = result.rows[0]; // Définition en dehors du bloc if
+    const card = result.rows[0];
     res.send({
       id: card.id,
       name: card.name,
@@ -289,12 +285,10 @@ app.put("/api/update-card/:id", upload.single("image"), async (req, res) => {
       return res.status(404).json({ message: "Carte non trouvée." });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Carte mise à jour avec succès.",
-        card: result.rows[0],
-      });
+    res.status(200).json({
+      message: "Carte mise à jour avec succès.",
+      card: result.rows[0],
+    });
   } catch (error) {
     console.error("Erreur lors de la mise à jour de la carte :", error);
     res.status(500).json({ message: "Erreur serveur." });
@@ -383,10 +377,9 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ message: "Mot de passe incorrect" });
     }
 
-    // Inclure le `username` dans la réponse
     return res.status(200).json({
       message: "Connexion réussie",
-      username: user.username, // Ajouter ici
+      username: user.username,
     });
   } catch (error) {
     console.error("Erreur de connexion", error);

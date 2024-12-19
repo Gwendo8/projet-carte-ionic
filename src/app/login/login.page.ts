@@ -26,9 +26,10 @@ export class LoginPage {
   
     this.apiService.login(this.email, this.password).subscribe({
       next: async (response) => {
-        localStorage.setItem('username', response.username); // Stocker le username
+        localStorage.setItem('username', response.username); 
+        localStorage.setItem('userId', response.userId);
         await this.showToast('Connexion réussie.');
-        this.router.navigate(['/home']);
+        this.router.navigate(['/accueil']);
       },
       error: async (error) => {
         const message =
