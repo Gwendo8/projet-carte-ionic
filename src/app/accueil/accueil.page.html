@@ -1,8 +1,64 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title class="app-title">Bienvenue sur l'application</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-menu side="end" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Utilisateur</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div style="text-align: center; margin-bottom: 20px">
+      <img
+        [src]="profileImageUrl"
+        alt="Photo de profil"
+        style="
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          object-fit: cover;
+        "
+      />
+    </div>
+
+    <p style="text-align: center; font-weight: bold">{{ username }}</p>
+
+    <ion-button expand="full" (click)="takeProfilePhoto()">
+      Prendre une photo
+    </ion-button>
+
+    <ion-list>
+      <ion-item routerLink="/accueil" routerDirection="root">
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+        Accueil
+      </ion-item>
+
+      <ion-item routerLink="/home" routerDirection="root">
+        <ion-icon slot="start" name="list-outline"></ion-icon>
+        Liste
+      </ion-item>
+
+      <ion-item routerLink="/propos" routerDirection="root">
+        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+        À propos
+      </ion-item>
+
+      <ion-item button (click)="logout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        Déconnexion
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Bienenue sur l'application</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-button>
+          <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
+        </ion-menu-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content class="content-container">
   <div class="intro-section">
@@ -43,19 +99,3 @@
   </div>
 </ion-content>
 
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="accueil" routerLink="/accueil">
-      <ion-icon name="home-outline"></ion-icon>
-      <ion-label>Home</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="list" routerLink="/home">
-      <ion-icon name="list-outline"></ion-icon>
-      <ion-label>Liste</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="propos" routerLink="/propos">
-      <ion-icon name="information-circle-outline"></ion-icon>
-      <ion-label>À propos</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>

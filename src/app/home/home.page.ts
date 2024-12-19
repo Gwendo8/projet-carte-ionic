@@ -5,6 +5,9 @@ import { CardDetailsModalComponent } from '../card-details-modal/card-details-mo
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+
+defineCustomElements(window);
 
 @Component({
   selector: 'app-home',

@@ -7,18 +7,18 @@ $footer-bg-color: #3a3a3a;
 
 ion-content {
   background-color: $background-color;
-  padding: 10px;
+  padding: 20px;
   font-family: "Roboto", sans-serif;
 }
 
 .intro-section {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
   animation: fadeIn 1s ease-in-out;
 }
 
 .app-logo {
-  width: 150px;
+  width: 170px;
   height: auto;
   margin-bottom: 20px;
 }
@@ -60,7 +60,7 @@ ion-content {
 .feature-block {
   background-color: $block-bg-color;
   border-radius: 10px;
-  padding: 15px;
+  padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -128,4 +128,18 @@ ion-content {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+ion-menu {
+  --background: rgba(0, 0, 0, 0.7);
+  color: white;
+}
+
+ion-item {
+  --background-hover: rgba(255, 255, 255, 0.1);
+  --color: black;
+}
+
+ion-icon {
+  color: #ffcc00;
 }

@@ -26,7 +26,8 @@ export class LoginPage {
   
     this.apiService.login(this.email, this.password).subscribe({
       next: async (response) => {
-        localStorage.setItem('username', response.username); 
+        console.log(response);  // Vérifiez la réponse du serveur
+        localStorage.setItem('username', response.username);
         localStorage.setItem('userId', response.userId);
         await this.showToast('Connexion réussie.');
         this.router.navigate(['/accueil']);

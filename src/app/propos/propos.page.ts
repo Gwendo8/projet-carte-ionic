@@ -24,10 +24,10 @@ export class ProposPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    const storedUsername = localStorage.getItem('username'); 
-  if (storedUsername) {
-    this.username = storedUsername;
-  }
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      this.username = storedUsername;
+    }
   }
 
   toggleUserMenu() {
@@ -46,8 +46,8 @@ export class ProposPage implements OnInit {
     try {
       const photo = await Camera.getPhoto({
         quality: 100,
-        source: CameraSource.Camera, 
-        resultType: CameraResultType.DataUrl, 
+        source: CameraSource.Camera,
+        resultType: CameraResultType.DataUrl,
       });
       this.profileImageUrl =
         photo.webPath ?? photo.dataUrl ?? '/assets/images/default-profile.jpg';
