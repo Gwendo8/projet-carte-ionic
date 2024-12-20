@@ -40,4 +40,10 @@ export class ApiService {
       map((response) => response.categories)
     );
   }
+  updateProfileImage(formData: FormData): Observable<any> {
+    return this.http.put(`${this.baseUrl}/users/profile-image`, formData);
+  }
+  getProfileImage(userId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/users/${userId}/profile-image`);
+  }
 }

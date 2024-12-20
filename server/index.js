@@ -14,8 +14,13 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.json({ limit: "100mb" }));
+app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
+
+app.use((req, res, next) => {
+  console.log('Taille de la charge utile (bytes):', req.headers['content-length']);
+  next();
+});
 
 const pool = new Pool({
   host: "localhost",
@@ -25,7 +30,6 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Stockage des fichiers
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "..", "src", "assets", "images"));
@@ -51,7 +55,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 50 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 },
 });
 
 app.use("/images", express.static(path.join(__dirname, "assets", "images")));
@@ -380,11 +384,59 @@ app.post("/api/login", async (req, res) => {
     return res.status(200).json({
       message: "Connexion réussie",
       username: user.username,
+      userId : user.id,
     });
   } catch (error) {
     console.error("Erreur de connexion", error);
     res.status(500).json({ message: "Erreur interne du serveur" });
   }
+});
+
+//Modification de la photo de profil de l'utilisateur
+app.put("/api/users/profile-image", upload.single('profile_image'), (req, res) => {
+  console.log('Image reçue:', req.file);
+
+  const { userId } = req.body;
+
+  const image_url = req.file ? `assets/images/${req.file.filename}` : null;
+  console.log("Fichier téléchargé:", req.file);
+
+  pool.query(
+    'UPDATE users SET image = $1 WHERE id = $2 RETURNING *',
+    [image_url, userId],
+    (error, result) => {
+      if (error) {
+        console.error('Erreur lors de la mise à jour de la photo de profil:', error);
+        return res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'image' });
+      }
+
+      res.status(200).json({
+        message: 'Image mise à jour avec succès',
+        user: result.rows[0],
+      });
+    }
+  );
+});
+
+app.get("/api/users/:id/profile-image", (req, res) => {
+  const { id } = req.params;
+  console.log(`Demande d'image pour l'utilisateur avec ID: ${id}`);
+
+  pool.query('SELECT image FROM users WHERE id = $1', [id], (error, result) => {
+    if (error) {
+      console.error('Erreur lors de la récupération de l\'image:', error);
+      return res.status(500).json({ message: 'Erreur lors de la récupération de l\'image' });
+    }
+
+    if (result.rows.length === 0) {
+      console.log('Utilisateur non trouvé');
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    const image_url = result.rows[0].image;
+    console.log(`Image trouvée: ${image_url}`);
+    res.status(200).json({ image_url });
+  });
 });
 
 app.listen(port, () => {
