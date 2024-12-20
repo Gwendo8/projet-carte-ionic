@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +34,10 @@ export class ApiService {
   login(email: string, password: string): Observable<any> {
     const body = { email, password };
     return this.http.post(`${this.baseUrl}/login`, body);
+  }
+  getCategories(): Observable<any[]> {
+    return this.http.get<{ categories: any[] }>(`${this.baseUrl}/form-data`).pipe(
+      map((response) => response.categories)
+    );
   }
 }

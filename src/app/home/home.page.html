@@ -67,9 +67,38 @@
     >
     </ion-searchbar>
 
-    <ion-button expand="full" routerLink="/add-card" class="add-card-button">
-      Ajouter une carte
-    </ion-button>
+    <ion-list>
+      <ion-item>
+        <ion-select
+          aria-label="catégories"
+          placeholder="Triez par catégorie"
+          [(ngModel)]="selectedCategory"
+          (ionChange)="filterByCategory()"
+          interface="popover"
+          class="custom-dropdown"
+        >
+          <ion-select-option value="toutes">
+            Toutes les catégories
+          </ion-select-option>
+          <ion-select-option
+            *ngFor="let category of categories"
+            [value]="category.name"
+          >
+            {{ category.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-button
+    expand="full"
+    routerLink="/add-card"
+    class="add-card-button floating-button"
+    shape="round"
+    color="success"
+  >
+    <ion-icon name="add" slot="icon-only"></ion-icon>
+  </ion-button>
 
     <ion-list>
       <ion-item *ngFor="let item of filteredData" class="card-item">

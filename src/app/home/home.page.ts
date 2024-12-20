@@ -17,6 +17,8 @@ defineCustomElements(window);
 export class HomePage implements OnInit {
   data: any[] = [];
   filteredData: any[] = [];
+  categories: any[] = [];
+  selectedCategory: string = '';
   searchTerm: string = '';
   userMenuOpen = false;
   profileImageUrl: string = '/assets/images/sasuke.jpeg';
@@ -39,6 +41,7 @@ export class HomePage implements OnInit {
       this.username = storedUsername;
     }
     this.loadData();
+    this.loadCategories(); // Charger les catégories ici
   }
 
   // Permet de recharger la page directement après l'ajout d'une carte
@@ -134,6 +137,26 @@ export class HomePage implements OnInit {
         photo.webPath ?? photo.dataUrl ?? '/assets/images/default-profile.jpg';
     } catch (error) {
       console.error('Erreur lors de la prise de la photo', error);
+    }
+  }
+
+  loadCategories() {
+    this.apiService.getCategories().subscribe(
+      (response) => {
+        this.categories = response;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des catégories', error);
+      }
+    );
+  }
+  filterByCategory() {
+    if (this.selectedCategory === 'toutes') {
+      this.filteredData = [...this.data];
+    } else {
+      this.filteredData = this.data.filter(
+        (item) => item.category_name === this.selectedCategory
+      );
     }
   }
 }
