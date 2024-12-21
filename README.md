@@ -19,3 +19,8 @@ Les utilisateurs peuvent effectuer les actions suivantes sur les cartes :
 	•	Créer une carte : Ajouter une nouvelle carte à l’application.
 	•	Modifier une carte : Cliquez directement sur la carte pour la modifier (aucun bouton visuel n’a été ajouté pour cette fonctionnalité).
 	•	Supprimer une carte : Retirer une carte de l’application.
+	•	Rechercher une carte : Il est possible de rechercher une carte par son nom via un champ de recherche.
+	•	Trier les cartes : Les cartes peuvent être triées par catégories, séries et rareté.
+
+Création Compte et Connexion : 
+Les utilisateurs peuvent se créer un compte et se connecter à l’application avec leurs identifiants.
