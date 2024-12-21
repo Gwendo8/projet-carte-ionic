@@ -40,6 +40,16 @@ export class ApiService {
       map((response) => response.categories)
     );
   }
+  getSeries(): Observable<any[]> {
+    return this.http.get<{ series: any[] }>(`${this.baseUrl}/form-data`).pipe(
+      map((response) => response.series)
+    );
+  }
+  getRaretes(): Observable<any[]> {
+    return this.http.get<{ rarities: any[] }>(`${this.baseUrl}/form-data`).pipe(
+      map((response) => response.rarities)
+    );
+  }
   updateProfileImage(formData: FormData): Observable<any> {
     return this.http.put(`${this.baseUrl}/users/profile-image`, formData);
   }

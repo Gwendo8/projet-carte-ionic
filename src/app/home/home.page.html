@@ -90,6 +90,54 @@
       </ion-item>
     </ion-list>
 
+
+    <ion-list>
+      <ion-item>
+        <ion-select
+          aria-label="séries"
+          placeholder="Triez par séries"
+          [(ngModel)]="selectedSeries"
+          (ionChange)="filterBySeries()"
+          interface="popover"
+          class="custom-dropdown"
+        >
+          <ion-select-option value="toutes">
+            Toutes les séries
+          </ion-select-option>
+          <ion-select-option
+            *ngFor="let serie of series"
+            [value]="serie.name"
+          >
+            {{ serie.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-item>
+        <ion-select
+          aria-label="raretés"
+          placeholder="Triez par raretés"
+          [(ngModel)]="selectedRarities"
+          (ionChange)="filterByRarities()"
+          interface="popover"
+          class="custom-dropdown"
+        >
+          <ion-select-option value="toutes">
+            Toutes les raretés
+          </ion-select-option>
+          <ion-select-option
+            *ngFor="let raritie of rarities"
+            [value]="raritie.name"
+          >
+            {{ raritie.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+
     <ion-button
     expand="full"
     routerLink="/add-card"

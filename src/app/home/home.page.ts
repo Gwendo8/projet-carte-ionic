@@ -18,7 +18,11 @@ export class HomePage implements OnInit {
   data: any[] = [];
   filteredData: any[] = [];
   categories: any[] = [];
-  selectedCategory: string = '';
+  selectedCategory: string = 'toutes';
+  series: any[] = [];
+  selectedSeries: string = 'toutes';
+  rarities: any[] = [];
+  selectedRarities: string = 'toutes';
   searchTerm: string = '';
   userMenuOpen = false;
   profileImageUrl: string = '/assets/images/sasuke.jpeg';
@@ -47,7 +51,9 @@ export class HomePage implements OnInit {
       this.loadProfileImage(this.userId);
     }
     this.loadData();
-    this.loadCategories(); 
+    this.loadCategories();
+    this.loadSeries();
+    this.loadRarities();
   }
 
   ionViewWillEnter() {
@@ -63,8 +69,8 @@ export class HomePage implements OnInit {
     this.apiService.getData().subscribe(
       (response) => {
         this.data = response;
-        this.filteredData = this.data;
-        console.log(this.data);
+        this.filteredData = [...this.data]; 
+        this.applyFilters(); 
       },
       (error) => {
         console.error('Erreur lors de la récupération des données', error);
@@ -72,7 +78,38 @@ export class HomePage implements OnInit {
     );
   }
 
-  // Méthode pour filtrer les cartes
+  // Méthode pour appliquer les filtres
+  applyFilters() {
+    this.filteredData = this.data.filter((item) => {
+      const matchesCategory =
+        this.selectedCategory === 'toutes' || item.category_name === this.selectedCategory;
+
+      const matchesSeries =
+        this.selectedSeries === 'toutes' || item.serie_name === this.selectedSeries;
+
+      const matchesRarity =
+        this.selectedRarities === 'toutes' || item.rarity_name === this.selectedRarities;
+
+      return matchesCategory && matchesSeries && matchesRarity;
+    });
+  }
+
+  // Méthode pour filtrer par catégorie
+  filterByCategory() {
+    this.applyFilters();
+  }
+
+  // Méthode pour filtrer par série
+  filterBySeries() {
+    this.applyFilters();
+  }
+
+  // Méthode pour filtrer par rareté
+  filterByRarities() {
+    this.applyFilters();
+  }
+
+  // Méthode pour filtrer les cartes par la searchbar
   filterCards(event: any) {
     const searchValue = this.searchTerm.toLowerCase();
     if (!searchValue) {
@@ -84,7 +121,7 @@ export class HomePage implements OnInit {
     );
   }
 
-  // Méthode pour ouvrir le modale
+  // Méthode pour ouvrir le modal de détails de la carte
   async openCardDetails(card: any, event: Event) {
     event.stopPropagation();
     const modal = await this.modalController.create({
@@ -126,11 +163,13 @@ export class HomePage implements OnInit {
     this.navController.navigateForward('/profile');
   }
 
+  // Déconnexion
   logout() {
     localStorage.removeItem('username');
     this.router.navigate(['/']);
   }
 
+  
   loadCategories() {
     this.apiService.getCategories().subscribe(
       (response) => {
@@ -141,15 +180,32 @@ export class HomePage implements OnInit {
       }
     );
   }
-  filterByCategory() {
-    if (this.selectedCategory === 'toutes') {
-      this.filteredData = [...this.data];
-    } else {
-      this.filteredData = this.data.filter(
-        (item) => item.category_name === this.selectedCategory
-      );
-    }
+
+  loadSeries() {
+    this.apiService.getSeries().subscribe(
+      (response) => {
+        this.series = response;
+        console.log('Séries récupérées :', this.series);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des series', error);
+      }
+    );
   }
+
+  loadRarities() {
+    this.apiService.getRaretes().subscribe(
+      (response) => {
+        this.rarities = response;
+        console.log('Raretés récupérées :', this.rarities);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des series', error);
+      }
+    );
+  }
+
+  // Prendre une photo 
   async takeProfilePhoto() {
     try {
       const photo = await Camera.getPhoto({
